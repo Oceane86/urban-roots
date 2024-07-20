@@ -32,8 +32,7 @@
             ],
             "scripts": [
               "node_modules/leaflet/dist/leaflet.js",
-              "node_modules/leaflet.markercluster/dist/leaflet.markercluster.js",
-              "analyze: ng build --prod --stats-json && webpack-bundle-analyzer dist/stats.json"
+              "node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"
 
             ]
           },
