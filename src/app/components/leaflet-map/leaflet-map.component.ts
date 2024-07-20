@@ -1,10 +1,9 @@
 // src/app/components/leaflet-map/leaflet-map.component.ts
-
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
-import 'leaflet.markercluster'; // Assurez-vous que ce module est disponible
+import 'leaflet.markercluster';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
@@ -21,18 +20,16 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
-  private markers: L.MarkerClusterGroup; // Assurez-vous que c'est initialisé correctement
+  private markers!: L.MarkerClusterGroup;
   public filters = {
     typeprojet: '',
     typeactivite: '',
     techniqueprod: ''
   };
   private urbanSpaces: any[] = [];
-  public resultsCount: number = 0;
+  public resultsCount: number = 0; // Ajouter cette propriété
 
-  constructor(private http: HttpClient) {
-    this.markers = L.markerClusterGroup(); // Initialisation correcte
-  }
+  constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
     if (!this.mapInitialized) {
@@ -73,7 +70,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.map = L.map('map').setView([46.603354, 1.888334], 6);
+    this.map = L.map('map').setView([46.603354, 1.888334], 6); // Center of France
 
     L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhaW5lei1tbGgiLCJhIjoiY2x5aW5xNTZlMGZ6ajJyczg4ZjdncWk5NyJ9.ZDbzpR-2xmnBF2NeiFwpug', {
       attribution: '',
@@ -84,6 +81,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
+    this.markers = L.markerClusterGroup();
     this.loadMarkers();
 
     this.getCurrentPosition().subscribe((position: any) => {
@@ -105,7 +103,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       }).addTo(this.map);
 
       this.markers.addLayer(userMarker);
-      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
       this.map.fitBounds(this.markers.getBounds());
     }, (error: any) => {
       console.error('Failed to get user position:', error);
@@ -115,8 +112,8 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private loadMarkers(): void {
     this.http.get('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209')
       .subscribe((data: any) => {
-        this.urbanSpaces = data;
-        this.applyFilters();
+        this.urbanSpaces = data; // Store the urban spaces data
+        this.applyFilters(); // Apply filters when the data is loaded
       });
   }
 
@@ -145,26 +142,25 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       const matchesTechniqueProd = this.filters.techniqueprod ? space.list_techniqueprod.includes(this.filters.techniqueprod) : true;
       return matchesTypeProjet && matchesTypeActivite && matchesTechniqueProd;
     });
-    this.resultsCount = this.filteredGardens.length;
+    this.resultsCount = this.filteredGardens.length; // Mise à jour du nombre de résultats
     this.updateMapMarkers();
   }
 
   public resetFilters(): void {
+    // Réinitialiser les valeurs des filtres
     this.filters = {
       typeprojet: '',
       typeactivite: '',
       techniqueprod: ''
     };
+    // Appliquer les filtres réinitialisés
     this.applyFilters();
   }
 
   private updateMapMarkers(): void {
-    if (!this.markers) {
-      console.error('Marker cluster group is not initialized');
-      return;
+    if (this.markers) {
+      this.markers.clearLayers();
     }
-
-    this.markers.clearLayers();
 
     const gardenIcon = L.icon({
       iconUrl: 'assets/images/garden-icon.png',
@@ -180,6 +176,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
         .addTo(this.markers);
     });
 
-    this.map.addLayer(this.markers); // Ajouter le groupe de marqueurs à la carte
+    this.map.addLayer(this.markers);
   }
 }
