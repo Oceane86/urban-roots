@@ -1,6 +1,5 @@
 // src/app/components/leaflet-map/leaflet-map.component.ts
 
-
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
