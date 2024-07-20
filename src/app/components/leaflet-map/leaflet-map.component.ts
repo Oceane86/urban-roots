@@ -1,4 +1,6 @@
 // src/app/components/leaflet-map/leaflet-map.component.ts
+
+
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
@@ -20,14 +22,14 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
-  public markers!: L.MarkerClusterGroup;
+  private markers!: L.MarkerClusterGroup;
   public filters = {
     typeprojet: '',
     typeactivite: '',
     techniqueprod: ''
   };
   private urbanSpaces: any[] = [];
-  public resultsCount: number = 0; // Ajouter cette propriété
+  public resultsCount: number = 0;
 
   constructor(private http: HttpClient) {}
 
@@ -70,7 +72,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    this.map = L.map('map').setView([46.603354, 1.888334], 6); // Center of France
+    this.map = L.map('map').setView([46.603354, 1.888334], 6);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhaW5lei1tbGgiLCJhIjoiY2x5aW5xNTZlMGZ6ajJyczg4ZjdncWk5NyJ9.ZDbzpR-2xmnBF2NeiFwpug', {
       attribution: '',
@@ -112,8 +114,8 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private loadMarkers(): void {
     this.http.get('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209')
       .subscribe((data: any) => {
-        this.urbanSpaces = data; // Store the urban spaces data
-        this.applyFilters(); // Apply filters when the data is loaded
+        this.urbanSpaces = data;
+        this.applyFilters();
       });
   }
 
@@ -142,18 +144,16 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       const matchesTechniqueProd = this.filters.techniqueprod ? space.list_techniqueprod.includes(this.filters.techniqueprod) : true;
       return matchesTypeProjet && matchesTypeActivite && matchesTechniqueProd;
     });
-    this.resultsCount = this.filteredGardens.length; // Mise à jour du nombre de résultats
+    this.resultsCount = this.filteredGardens.length;
     this.updateMapMarkers();
   }
 
   public resetFilters(): void {
-    // Réinitialiser les valeurs des filtres
     this.filters = {
       typeprojet: '',
       typeactivite: '',
       techniqueprod: ''
     };
-    // Appliquer les filtres réinitialisés
     this.applyFilters();
   }
 
