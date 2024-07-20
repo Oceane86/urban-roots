@@ -1,5 +1,3 @@
-// src/app/components/leaflet-map/leaflet-map.component.ts
-
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
@@ -76,7 +74,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    this.markers = L.markerClusterGroup();
+    this.markers = L.markerClusterGroup(); // Initialize marker cluster group
     this.map.addLayer(this.markers);
 
     this.loadMarkers();
