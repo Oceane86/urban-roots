@@ -1,0 +1,71 @@
+<!-- src/app/pages/home/home.component.html -->
+
+<div class="container-fluid bg-dark text-light rounded-bottom py-8">
+  <div class="row justify-content-between align-items-center p-4">
+    <div class="col">
+      <h1 class="display-6 fw-bold">Urban <span class="text-success">Roots</span></h1>
+      <h1 class="text-3xl">Bienvenue, {{ user?.username }}</h1>
+      <!-- Afficher le message et l'icône lorsque l'utilisateur n'est pas connecté -->
+      <div *ngIf="!user" class="notification d-flex align-items-center">
+        <span class="notification-message">Please log in to enjoy more features</span>
+      </div>
+      <div *ngIf="user" class="bg-white w-full text-black p-2 mt-4 rounded-2xl border flex items-center">
+        <span>Dernier message sur du forum</span>
+        <i class="fas fa-heart text-xl mr-2"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-white text-dark rounded-bottom py-8">
+  <div class="row justify-content-center align-items-center p-4">
+    <div class="col text-center">
+      <p class="text-xl fw-bold text-dark">Nombre d'espaces urbains regroupés sur l'application</p>
+      <p class="text-sm text-dark">{{ urbanSpacesCount !== null ? urbanSpacesCount : 'Chargement...' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row p-4">
+    <div class="col-md-6 mb-4">
+      <div class="position-relative">
+        <a [routerLink]="['/map']">
+        <img src="/assets/img/Card2.png" alt="Green Plants" class="img-fluid rounded-lg mt-2">
+        <h2 class="position-absolute bottom-0 start-50 translate-middle-x text-2xl fw-bold text-white">
+          Visualiser votre <br> Carte Interactive
+        </h2>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="row g-4">
+        <div class="col position-relative" (click)="navigateToGuide()">
+          <img src="/assets/img/Card3.png" alt="Cactus" class="img-fluid rounded-lg">
+          <p class="position-absolute bottom-0 start-50 translate-middle-x text-lg fw-bold text-white">
+            Échange et <br> Partage
+          </p>
+        </div>
+
+        <div class="col position-relative">
+          <img src="/assets/img/Card3.png" alt="Cactus Red" class="img-fluid rounded-lg">
+          <p class="position-absolute bottom-0 start-50 translate-middle-x text-lg fw-bold text-white">
+            Organisations <br> d'Événements
+          </p>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="position-relative">
+            <img src="/assets/img/Card2.png" alt="Green Plants" class="img-fluid rounded-lg mt-2">
+            <h2 class="position-absolute bottom-0 start-50 translate-middle-x text-2xl fw-bold text-white">
+              Visualiser votre <br> Carte Interactive
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-bottom-bar></app-bottom-bar>

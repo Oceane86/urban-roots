@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-600 flex items-center justify-center h-screen">
+  <div class="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="text-center mb-6">
+      <img src="path-to-logo.png" alt="Plantio" class="mx-auto mb-4" />
+      <h1 class="text-2xl font-semibold text-green-600">Register on Plantio</h1>
+      <p class="text-gray-600">Create an Aepod account, We can’t wait to have you.</p>
+    </div>
+    
+    @if (errorMessage) {
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div>
+        <input type="text" placeholder="Username" formControlName="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div>
+        <input type="text" placeholder="Email" formControlName="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div>
+        <input type="password" placeholder="Password" formControlName="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div class="flex items-center justify-center">
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Sign Up</button>
+      </div>
+    </form>
+    
+    <div class="text-center mt-4">
+      <p class="text-gray-600">Already have an account? <a href="#" class="text-green-600 hover:text-green-800">Login</a></p>
+    </div>
+  </div>
+</body>
+</html>

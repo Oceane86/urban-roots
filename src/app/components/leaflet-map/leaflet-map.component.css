@@ -1,0 +1,43 @@
+.popup-container {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%); /* Centrer horizontalement */
+  width: 90%; /* Largeur flexible */
+  max-width: 600px; /* Largeur maximale */
+  background: white;
+  padding: 10px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* Arrondir les coins */
+  z-index: 1000; /* Assurez-vous qu'il soit au-dessus de la carte */
+  box-sizing: border-box; /* Inclure le padding dans la largeur totale */
+}
+
+.popup-content {
+  display: flex;
+  align-items: center;
+}
+
+.popup-image {
+  width: 70px;
+  height: 70px;
+  margin-right: 10px;
+}
+
+.popup-details {
+  flex-grow: 1;
+}
+@media (max-width: 600px) {
+  .popup-container {
+    width: 85%; /* Largeur pour petits écrans */
+  }
+  
+  .popup-image {
+    max-width: 60px; /* Réduire la taille de l'image sur petits écrans */
+  }
+
+  .popup-details {
+    flex-grow: 1;
+    font-size: 12px;
+  }
+}

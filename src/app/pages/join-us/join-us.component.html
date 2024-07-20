@@ -1,0 +1,38 @@
+<!-- src/app/pages/join-us/join-us.component.html -->
+<div class="join-us h-screen flex flex-col justify-center items-center relative bg-[#E7FAE6]">
+  <!-- Arrière-plan avec flou -->
+  <div class="absolute top-20 left-5 right-5 bottom-0 flex justify-center items-center">
+    <div class="bg-opacity-50 backdrop-blur-sm rounded-lg p-6">
+      <!-- Contenu centré -->
+      <div class="text-center">
+        <p class="text-4xl">Commencer à utiliser l'app</p>
+
+        <!-- Message d'erreur -->
+        <div *ngIf="showError" class="text-red-500 mt-2">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Bouton "Log In" avec z-index ajusté -->
+        <div class="flex justify-center">
+          <button [disabled]="!termsAccepted" (click)="nextScreen()" class="mt-4 bg-white text-black py-2 px-4 rounded">Connexion</button>
+        </div>
+        <div class="flex justify-center">
+          <button [disabled]="!termsAccepted" routerLink="/register" class="mt-4 bg-white text-black py-2 px-4 rounded">Inscription</button>
+        </div>
+
+        <!-- Bouton "Se connecter avec Google" -->
+        <div class="mt-4 flex justify-center">
+          <button [disabled]="!termsAccepted" (click)="googleSignin()" class="bg-white text-black py-2 px-4 rounded flex items-center">
+            <span class="ml-2">Se connecter avec Google</span>
+          </button>
+        </div>
+
+        <!-- Case à cocher pour accepter les conditions générales -->
+        <div class="mt-4 flex items-center justify-center">
+          <input type="checkbox" id="terms" (change)="toggleTermsAccepted($event)">
+          <label for="terms" class="ml-2">J'accepte les conditions générales</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
