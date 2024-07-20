@@ -20,7 +20,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
-  private markers!: L.MarkerClusterGroup;
+  public markers!: L.MarkerClusterGroup;
   public filters = {
     typeprojet: '',
     typeactivite: '',
