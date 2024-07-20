@@ -59,6 +59,10 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  private initializeMarkerClusterGroup(): L.MarkerClusterGroup {
+    return L.markerClusterGroup();
+  }
+
   private loadMap(): void {
     if (this.map) {
       return; // Map is already initialized
@@ -74,7 +78,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    this.markers = L.markerClusterGroup(); // Initialize marker cluster group
+    this.markers = this.initializeMarkerClusterGroup(); // Initialize marker cluster group using the function
     this.map.addLayer(this.markers);
 
     this.loadMarkers();
