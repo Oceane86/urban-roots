@@ -4,7 +4,7 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
-import 'leaflet.markercluster'; // Assurez-vous que ce module est disponible
+import 'leaflet.markercluster'; // Import leaflet.markercluster after leaflet
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
@@ -17,11 +17,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
+  private markers: L.MarkerClusterGroup; // Initialize MarkerClusterGroup
   private mapInitialized = false;
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
-  private markers: L.MarkerClusterGroup; // Assurez-vous que c'est initialisé correctement
   public filters = {
     typeprojet: '',
     typeactivite: '',
@@ -31,7 +31,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   public resultsCount: number = 0;
 
   constructor(private http: HttpClient) {
-    this.markers = L.markerClusterGroup(); // Initialisation correcte
+    this.markers = L.markerClusterGroup(); // Initialize MarkerClusterGroup
   }
 
   ngAfterViewInit(): void {
@@ -84,31 +84,33 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    this.loadMarkers();
+    // Handle map ready and markers initialization
+    this.map.on('load', () => {
+      this.loadMarkers();
+      this.getCurrentPosition().subscribe((position: any) => {
+        const userIcon = L.icon({
+          iconUrl: 'assets/images/marker-icon.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+        });
 
-    this.getCurrentPosition().subscribe((position: any) => {
-      const userIcon = L.icon({
-        iconUrl: 'assets/images/marker-icon.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
+        const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon })
+          .addTo(this.map);
+
+        L.circle([position.latitude, position.longitude], {
+          radius: position.accuracy / 2,
+          color: 'red',
+          fillColor: 'red',
+          fillOpacity: 0.2,
+        }).addTo(this.map);
+
+        this.markers.addLayer(userMarker);
+        this.map.addLayer(this.markers); // Ensure markers are added to the map
+        this.map.fitBounds(this.markers.getBounds());
+      }, (error: any) => {
+        console.error('Failed to get user position:', error);
       });
-
-      const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon })
-        .addTo(this.map);
-
-      L.circle([position.latitude, position.longitude], {
-        radius: position.accuracy / 2,
-        color: 'red',
-        fillColor: 'red',
-        fillOpacity: 0.2,
-      }).addTo(this.map);
-
-      this.markers.addLayer(userMarker);
-      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
-      this.map.fitBounds(this.markers.getBounds());
-    }, (error: any) => {
-      console.error('Failed to get user position:', error);
     });
   }
 
@@ -180,6 +182,8 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
         .addTo(this.markers);
     });
 
-    this.map.addLayer(this.markers); // Ajouter le groupe de marqueurs à la carte
+    if (this.map) {
+      this.map.addLayer(this.markers); // Ensure markers are added to the map
+    }
   }
 }
