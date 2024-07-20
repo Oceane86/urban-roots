@@ -1,10 +1,12 @@
 // src/app/components/leaflet-map/leaflet-map.component.ts
 
+// src/app/components/leaflet-map/leaflet-map.component.ts
+
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
-import 'leaflet.markercluster'; // Import leaflet.markercluster after leaflet
+import 'leaflet.markercluster'; // Importez après leaflet
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
@@ -17,7 +19,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  private markers: L.MarkerClusterGroup; // Initialize MarkerClusterGroup
+  private markers: L.MarkerClusterGroup = L.markerClusterGroup(); // Initialisation correcte
   private mapInitialized = false;
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
@@ -30,9 +32,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private urbanSpaces: any[] = [];
   public resultsCount: number = 0;
 
-  constructor(private http: HttpClient) {
-    this.markers = L.markerClusterGroup(); // Initialize MarkerClusterGroup
-  }
+  constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
     if (!this.mapInitialized) {
@@ -84,7 +84,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    // Handle map ready and markers initialization
     this.map.on('load', () => {
       this.loadMarkers();
       this.getCurrentPosition().subscribe((position: any) => {
@@ -106,7 +105,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
         }).addTo(this.map);
 
         this.markers.addLayer(userMarker);
-        this.map.addLayer(this.markers); // Ensure markers are added to the map
+        this.map.addLayer(this.markers); // Ajoutez les marqueurs à la carte
         this.map.fitBounds(this.markers.getBounds());
       }, (error: any) => {
         console.error('Failed to get user position:', error);
@@ -119,6 +118,8 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       .subscribe((data: any) => {
         this.urbanSpaces = data;
         this.applyFilters();
+      }, (error: any) => {
+        console.error('Failed to load markers:', error);
       });
   }
 
@@ -178,12 +179,13 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
     this.filteredGardens.forEach((garden: any) => {
       const gardenMarker = L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: gardenIcon })
         .bindPopup(this.createPopupContent(garden))
-        .on('click', () => this.updatePopupContent(garden))
-        .addTo(this.markers);
+        .on('click', () => this.updatePopupContent(garden));
+
+      this.markers.addLayer(gardenMarker); // Ajouter le marqueur au groupe de clusters
     });
 
     if (this.map) {
-      this.map.addLayer(this.markers); // Ensure markers are added to the map
+      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
     }
   }
 }
