@@ -1,12 +1,10 @@
 // src/app/components/leaflet-map/leaflet-map.component.ts
 
-// src/app/components/leaflet-map/leaflet-map.component.ts
-
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
-import 'leaflet.markercluster'; // Importez après leaflet
+import 'leaflet.markercluster'; // Assurez-vous que ce module est disponible
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
@@ -19,11 +17,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  private markers: L.MarkerClusterGroup = L.markerClusterGroup(); // Initialisation correcte
   private mapInitialized = false;
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
+  private markers: L.MarkerClusterGroup; // Assurez-vous que c'est initialisé correctement
   public filters = {
     typeprojet: '',
     typeactivite: '',
@@ -32,7 +30,9 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private urbanSpaces: any[] = [];
   public resultsCount: number = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.markers = L.markerClusterGroup(); // Initialisation correcte
+  }
 
   ngAfterViewInit(): void {
     if (!this.mapInitialized) {
@@ -84,32 +84,31 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    this.map.on('load', () => {
-      this.loadMarkers();
-      this.getCurrentPosition().subscribe((position: any) => {
-        const userIcon = L.icon({
-          iconUrl: 'assets/images/marker-icon.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-        });
+    this.loadMarkers();
 
-        const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon })
-          .addTo(this.map);
-
-        L.circle([position.latitude, position.longitude], {
-          radius: position.accuracy / 2,
-          color: 'red',
-          fillColor: 'red',
-          fillOpacity: 0.2,
-        }).addTo(this.map);
-
-        this.markers.addLayer(userMarker);
-        this.map.addLayer(this.markers); // Ajoutez les marqueurs à la carte
-        this.map.fitBounds(this.markers.getBounds());
-      }, (error: any) => {
-        console.error('Failed to get user position:', error);
+    this.getCurrentPosition().subscribe((position: any) => {
+      const userIcon = L.icon({
+        iconUrl: 'assets/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
       });
+
+      const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon })
+        .addTo(this.map);
+
+      L.circle([position.latitude, position.longitude], {
+        radius: position.accuracy / 2,
+        color: 'red',
+        fillColor: 'red',
+        fillOpacity: 0.2,
+      }).addTo(this.map);
+
+      this.markers.addLayer(userMarker);
+      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
+      this.map.fitBounds(this.markers.getBounds());
+    }, (error: any) => {
+      console.error('Failed to get user position:', error);
     });
   }
 
@@ -118,8 +117,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       .subscribe((data: any) => {
         this.urbanSpaces = data;
         this.applyFilters();
-      }, (error: any) => {
-        console.error('Failed to load markers:', error);
       });
   }
 
@@ -179,13 +176,10 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
     this.filteredGardens.forEach((garden: any) => {
       const gardenMarker = L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: gardenIcon })
         .bindPopup(this.createPopupContent(garden))
-        .on('click', () => this.updatePopupContent(garden));
-
-      this.markers.addLayer(gardenMarker); // Ajouter le marqueur au groupe de clusters
+        .on('click', () => this.updatePopupContent(garden))
+        .addTo(this.markers);
     });
 
-    if (this.map) {
-      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
-    }
+    this.map.addLayer(this.markers); // Ajouter le groupe de marqueurs à la carte
   }
 }
