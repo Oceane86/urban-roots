@@ -59,7 +59,7 @@ export class JoinUsComponent {
     }
     try {
       await this.authService.signInWithGoogle();
-      this.router.navigate(['/']); // Navigate to home or desired route
+      this.router.navigate(['/home']); // Navigate to home or desired route
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
