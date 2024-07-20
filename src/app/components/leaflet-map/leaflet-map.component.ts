@@ -4,7 +4,7 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
-import 'leaflet.markercluster';
+import 'leaflet.markercluster'; // Assurez-vous que ce module est disponible
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
@@ -21,7 +21,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
-  private markers!: L.MarkerClusterGroup;
+  private markers: L.MarkerClusterGroup; // Assurez-vous que c'est initialisé correctement
   public filters = {
     typeprojet: '',
     typeactivite: '',
@@ -30,7 +30,9 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private urbanSpaces: any[] = [];
   public resultsCount: number = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.markers = L.markerClusterGroup(); // Initialisation correcte
+  }
 
   ngAfterViewInit(): void {
     if (!this.mapInitialized) {
@@ -82,7 +84,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       accessToken: environment.mapbox.accessToken,
     }).addTo(this.map);
 
-    this.markers = L.markerClusterGroup();
     this.loadMarkers();
 
     this.getCurrentPosition().subscribe((position: any) => {
@@ -104,6 +105,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       }).addTo(this.map);
 
       this.markers.addLayer(userMarker);
+      this.map.addLayer(this.markers); // Assurez-vous que les marqueurs sont ajoutés à la carte
       this.map.fitBounds(this.markers.getBounds());
     }, (error: any) => {
       console.error('Failed to get user position:', error);
@@ -157,9 +159,12 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateMapMarkers(): void {
-    if (this.markers) {
-      this.markers.clearLayers();
+    if (!this.markers) {
+      console.error('Marker cluster group is not initialized');
+      return;
     }
+
+    this.markers.clearLayers();
 
     const gardenIcon = L.icon({
       iconUrl: 'assets/images/garden-icon.png',
@@ -175,6 +180,6 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
         .addTo(this.markers);
     });
 
-    this.map.addLayer(this.markers);
+    this.map.addLayer(this.markers); // Ajouter le groupe de marqueurs à la carte
   }
 }
