@@ -1,4 +1,3 @@
-<!-- test.component.html -->
 <div>
   <!-- Formulaire de filtrage -->
   <form (ngSubmit)="applyFilters()">
@@ -16,12 +15,27 @@
       <option *ngFor="let type of typesActivites" [value]="type">{{ type }}</option>
     </select>
 
-  
+    <!-- Filtre par Technique de Production -->
+    <label for="techniqueprod">Technique de Production:</label>
+    <select id="techniqueprod" [(ngModel)]="selectedTechniqueProd" name="techniqueprod">
+      <option value="">Tous</option>
+      <option *ngFor="let technique of techniquesProd" [value]="technique">{{ technique }}</option>
+    </select>
+
+    <!-- Filtre par Type de Produit -->
+    <label for="typeprod">Type de Produit:</label>
+    <select id="typeprod" [(ngModel)]="selectedTypeProd" name="typeprod">
+      <option value="">Tous</option>
+      <option *ngFor="let produit of typesProd" [value]="produit">{{ produit }}</option>
+    </select>
 
     <!-- Bouton pour appliquer les filtres -->
     <button type="submit">Appliquer les filtres</button>
   </form>
 
+  <!-- Afficher le nombre d'établissements -->
+  <p>Nombre d'établissements affichés : {{ numberOfEstablishments }}</p>
+
   <!-- Conteneur pour la carte Leaflet -->
-  <div id="map" style="height: 500px; width: 100%;"></div>
+  <div id="map" style="height: 500px;"></div>
 </div>

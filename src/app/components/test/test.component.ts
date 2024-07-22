@@ -28,6 +28,9 @@ export class TestComponent implements OnInit {
 
   private allMarkers: { marker: L.Marker; typeProjet: string[]; typeActivite: string[] }[] = [];
 
+  // Propriété pour stocker le nombre d'établissements affichés
+  public numberOfEstablishments: number = 0;
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -126,6 +129,9 @@ export class TestComponent implements OnInit {
       const typeActivitesMatch = !this.selectedTypeActivite || typeActivite.includes(this.selectedTypeActivite);
       return typeProjetsMatch && typeActivitesMatch;
     });
+
+    // Mettre à jour le nombre d'établissements
+    this.numberOfEstablishments = filteredMarkers.length;
 
     filteredMarkers.forEach(({ marker }) => this.markers.addLayer(marker));
   }
