@@ -41,4 +41,11 @@ app-bottom-bar {
     width: 25px;
     height: 25px;
   }
+
+  .center-btn {
+    top: 2rem; /* Ajuste la position pour les petits écrans */
+    right: 2rem; /* Ajuste la position pour les petits écrans */
+    padding: 0.5rem 0.75rem; /* Réduit l'espacement interne */
+    font-size: 0.875rem; /* Réduit la taille de la police */
+  }
 }
