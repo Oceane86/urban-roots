@@ -1,10 +1,11 @@
-import * as L from 'leaflet';
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
-import 'leaflet.markercluster'; // Ensure this is imported
-import { environment } from '../../../environments/environment';
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.fullscreen'; // Import the fullscreen plugin
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -15,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class LeafletMapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  private markers!: L.MarkerClusterGroup; // Define the type of markers
+  private markers!: L.MarkerClusterGroup;
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
@@ -68,17 +69,19 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
       return; // Map is already initialized
     }
 
-    this.map = L.map('map').setView([46.603354, 1.888334], 6); // Center of France
+    this.map = L.map('map', {
+      center: [46.603354, 1.888334],
+      zoom: 6,
+      layers: [L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhaW5lei1tbGgiLCJhIjoiY2x5aW5xNTZlMGZ6ajJyczg4ZjdncWk5NyJ9.ZDbzpR-2xmnBF2NeiFwpug', {
+        attribution: '',
+        maxZoom: 18,
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: environment.mapbox.accessToken,
+      })]
+    });
 
-    L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2hhaW5lei1tbGgiLCJhIjoiY2x5aW5xNTZlMGZ6ajJyczg4ZjdncWk5NyJ9.ZDbzpR-2xmnBF2NeiFwpug', {
-      attribution: '',
-      maxZoom: 18,
-      tileSize: 512,
-      zoomOffset: -1,
-      accessToken: environment.mapbox.accessToken,
-    }).addTo(this.map);
-
-    this.markers = this.initializeMarkerClusterGroup(); // Initialize marker cluster group using the function
+    this.markers = this.initializeMarkerClusterGroup(); // Initialize marker cluster group
     this.map.addLayer(this.markers);
 
     this.loadMarkers();
@@ -102,7 +105,7 @@ export class LeafletMapComponent implements AfterViewInit, OnDestroy {
         }).addTo(this.map);
 
         this.markers.addLayer(userMarker);
-        this.map.fitBounds(this.markers.getBounds());
+        this.map.setView([position.latitude, position.longitude], 13); // Center the map on the user's location
       },
       (error: any) => {
         console.error('Failed to get user position:', error);
