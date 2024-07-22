@@ -6,11 +6,9 @@ import { JoinUsComponent } from './pages/join-us/join-us.component';
 import { HomeComponent } from './pages/home/home.component';
 import { Profile } from './pages/profile/profile.component'; // Correct the import
 import { InteractiveGuideComponent } from './pages/interactive-guide/interactive-guide.component';
-import { LeafletMapComponent } from './components/leaflet-map/leaflet-map.component'; // Correct the import
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { ForumComponent } from './pages/forum/forum.component';
 import { ReplyPageComponent } from './pages/reply/reply.component';
-import { LeafletCarteComponent } from './components/leaflet-carte/leaflet-carte.component';
 import { TestComponent } from './components/test/test.component';
 
 export const routes: Routes = [
@@ -24,6 +22,5 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
   { path: 'replyId', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'carte', component: LeafletCarteComponent },
-  { path: 'test', component: TestComponent }
+  { path: 'carte', component:  TestComponent },
 ];

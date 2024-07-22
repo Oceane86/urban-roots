@@ -14,12 +14,17 @@ import { FormsModule } from '@angular/forms'; // Importation nécessaire pour ng
 export class TestComponent implements OnInit {
   private map: L.Map | undefined;
   private markers: L.MarkerClusterGroup = L.markerClusterGroup(); // Initialiser avec une valeur par défaut
+  private userMarker: L.Marker | undefined; // Marqueur pour la position de l'utilisateur
 
   public selectedTypeProjet: string = '';
   public selectedTypeActivite: string = '';
+  public selectedTechniqueProd: string = ''; // Ajouté
+  public selectedTypeProd: string = ''; // Ajouté
 
   public typesProjets: string[] = [];
   public typesActivites: string[] = [];
+  public techniquesProd: string[] = []; // Ajouté
+  public typesProd: string[] = []; // Ajouté
 
   private allMarkers: { marker: L.Marker; typeProjet: string[]; typeActivite: string[] }[] = [];
 
@@ -28,6 +33,7 @@ export class TestComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
     this.loadMarkers();
+    this.showUserLocation(); // Ajouté pour afficher la position de l'utilisateur
   }
 
   private initMap(): void {
@@ -49,9 +55,11 @@ export class TestComponent implements OnInit {
 
   private loadMarkers(): void {
     this.http.get<any[]>('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209').subscribe(data => {
-      if (this.markers) {
+      if (this.map) {
         this.typesProjets = [...new Set(data.flatMap(item => item.list_typeprojet))];
         this.typesActivites = [...new Set(data.flatMap(item => item.list_typeactivite))];
+        this.techniquesProd = [...new Set(data.flatMap(item => item.list_techniqueprod))]; // Ajouté
+        this.typesProd = [...new Set(data.flatMap(item => item.list_typeprod))]; // Ajouté
 
         this.allMarkers = data.map(item => {
           const lat = parseFloat(item.lat);
@@ -80,10 +88,44 @@ export class TestComponent implements OnInit {
     });
   }
 
-  public applyFilters(): void {
-    this.markers.clearLayers();
+  private showUserLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
 
-    const filteredMarkers = this.allMarkers.filter(({ marker, typeProjet, typeActivite }) => {
+        if (this.map) {
+          // Ajouter un marqueur pour la position de l'utilisateur
+          if (this.userMarker) {
+            this.map.removeLayer(this.userMarker); // Supprimer le précédent marqueur de l'utilisateur s'il existe
+          }
+
+          this.userMarker = L.marker([lat, lng], {
+            icon: L.icon({
+              iconUrl: 'https://example.com/user-icon.png', // URL d'un icône pour l'utilisateur
+              iconSize: [32, 32],
+              iconAnchor: [16, 32],
+              popupAnchor: [0, -32]
+            })
+          }).bindPopup('Vous êtes ici').addTo(this.map);
+
+          // Centrer la carte sur la position de l'utilisateur
+          this.map.setView([lat, lng], 12);
+        }
+      }, error => {
+        console.error('Erreur de géolocalisation:', error);
+      });
+    } else {
+      console.error('La géolocalisation n\'est pas supportée par ce navigateur.');
+    }
+  }
+
+  public applyFilters(): void {
+    if (!this.map) return; // Vérifie si la carte est définie
+
+    this.markers.clearLayers(); // Efface les anciens marqueurs
+
+    const filteredMarkers = this.allMarkers.filter(({ typeProjet, typeActivite }) => {
       const typeProjetsMatch = !this.selectedTypeProjet || typeProjet.includes(this.selectedTypeProjet);
       const typeActivitesMatch = !this.selectedTypeActivite || typeActivite.includes(this.selectedTypeActivite);
       return typeProjetsMatch && typeActivitesMatch;
