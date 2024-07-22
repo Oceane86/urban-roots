@@ -9,6 +9,7 @@ import { InteractiveGuideComponent } from './pages/interactive-guide/interactive
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { ForumComponent } from './pages/forum/forum.component';
 import { ReplyPageComponent } from './pages/reply/reply.component';
+import { LeafletCarteComponent } from './components/leaflet-carte/leaflet-carte.component';
 import { TestComponent } from './components/test/test.component';
 
 export const routes: Routes = [
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
   { path: 'replyId', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'carte', component:  TestComponent },
+  { path: 'carte', component: LeafletCarteComponent },
+  { path: 'test', component: TestComponent }
 ];

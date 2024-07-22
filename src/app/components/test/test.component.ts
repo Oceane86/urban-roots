@@ -96,10 +96,6 @@ export class TestComponent implements OnInit {
 
         if (this.map) {
           // Ajouter un marqueur pour la position de l'utilisateur
-          if (this.userMarker) {
-            this.map.removeLayer(this.userMarker); // Supprimer le précédent marqueur de l'utilisateur s'il existe
-          }
-
           this.userMarker = L.marker([lat, lng], {
             icon: L.icon({
               iconUrl: 'https://example.com/user-icon.png', // URL d'un icône pour l'utilisateur
