@@ -26,3 +26,19 @@ app-bottom-bar {
   text-align: center;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
+
+
+/* Styles pour les petits écrans */
+@media (max-width: 600px) {
+  .custom-cluster-icon {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+  }
+
+  .leaflet-marker-icon {
+    width: 25px;
+    height: 25px;
+  }
+}
