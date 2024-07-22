@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import * as L from 'leaflet'; // Correction de l'importation de Leaflet
-import 'leaflet.markercluster'; // Importation du plugin MarkerCluster
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // Importation nécessaire pour ngModel
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [],
+  imports: [FormsModule], // Importer FormsModule ici
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
 })
@@ -41,7 +42,6 @@ export class TestComponent implements OnInit {
       ]
     });
 
-    // Ajout du groupe de clusters à la carte
     if (this.map) {
       this.map.addLayer(this.markers);
     }
@@ -59,17 +59,15 @@ export class TestComponent implements OnInit {
           const title = item.title || 'No Title';
           const iconUrl = item.img || 'https://example.com/default-icon.png'; // URL d'un icône par défaut
 
-          // Créer le marqueur
           const marker = L.marker([lat, lng], {
             icon: L.icon({
               iconUrl: iconUrl,
-              iconSize: [32, 32], // Taille de l'icône
-              iconAnchor: [16, 32], // Ancrage de l'icône
-              popupAnchor: [0, -32] // Ancrage de la popup
+              iconSize: [32, 32],
+              iconAnchor: [16, 32],
+              popupAnchor: [0, -32]
             })
           }).bindPopup(`<b>${title}</b>`);
 
-          // Retourner un objet avec le marqueur et ses données
           return {
             marker: marker,
             typeProjet: item.list_typeprojet,
@@ -83,7 +81,7 @@ export class TestComponent implements OnInit {
   }
 
   public applyFilters(): void {
-    this.markers.clearLayers(); // Nettoyer les anciens marqueurs
+    this.markers.clearLayers();
 
     const filteredMarkers = this.allMarkers.filter(({ marker, typeProjet, typeActivite }) => {
       const typeProjetsMatch = !this.selectedTypeProjet || typeProjet.includes(this.selectedTypeProjet);
@@ -91,6 +89,6 @@ export class TestComponent implements OnInit {
       return typeProjetsMatch && typeActivitesMatch;
     });
 
-    filteredMarkers.forEach(({ marker }) => this.markers.addLayer(marker)); // Ajouter les marqueurs filtrés
+    filteredMarkers.forEach(({ marker }) => this.markers.addLayer(marker));
   }
 }

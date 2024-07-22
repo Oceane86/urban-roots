@@ -1,20 +1,27 @@
 <!-- test.component.html -->
 <div>
+  <!-- Formulaire de filtrage -->
   <form (ngSubmit)="applyFilters()">
+    <!-- Filtre par Type de Projet -->
     <label for="typeprojet">Type de Projet:</label>
     <select id="typeprojet" [(ngModel)]="selectedTypeProjet" name="typeprojet">
       <option value="">Tous</option>
       <option *ngFor="let type of typesProjets" [value]="type">{{ type }}</option>
     </select>
 
+    <!-- Filtre par Type d'Activité -->
     <label for="typeactivite">Type d'Activité:</label>
     <select id="typeactivite" [(ngModel)]="selectedTypeActivite" name="typeactivite">
       <option value="">Tous</option>
       <option *ngFor="let type of typesActivites" [value]="type">{{ type }}</option>
     </select>
 
+  
+
+    <!-- Bouton pour appliquer les filtres -->
     <button type="submit">Appliquer les filtres</button>
   </form>
 
-  <div id="map" style="height: 500px;"></div>
+  <!-- Conteneur pour la carte Leaflet -->
+  <div id="map" style="height: 500px; width: 100%;"></div>
 </div>
