@@ -2,12 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 
 @Component({
   selector: 'app-leaflet-carte',
   standalone: true,
-  imports: [BottomBarComponent],
   templateUrl: './leaflet-carte.component.html',
   styleUrls: ['./leaflet-carte.component.css']
 })
@@ -18,7 +16,6 @@ export class LeafletCarteComponent implements OnInit {
   private currentLocationMarker?: L.Marker;
   private currentLocationCircle?: L.Circle;
 
-  private markers: L.Marker[] = [];
   private allMarkersData: any[] = [];
   private selectedProjectFilters: Set<string> = new Set();
   private selectedProductFilters: Set<string> = new Set();
@@ -84,6 +81,7 @@ export class LeafletCarteComponent implements OnInit {
     this.markerClusterGroup.clearLayers();
     const filteredData = this.allMarkersData.filter(site => this.isVisible(site));
     this.totalLocations = filteredData.length;
+
     filteredData.forEach(site => {
       const lat = parseFloat(site.lat);
       const lng = parseFloat(site.lng);
@@ -132,11 +130,8 @@ export class LeafletCarteComponent implements OnInit {
     return isProjectTypeVisible && isProductTypeVisible && isTechniqueTypeVisible;
   }
 
-
   public onFilterChange(filterType: string, event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    console.log(`Filter Type: ${filterType}`);
-    console.log(`Selected Value: ${selectElement.value}`);
 
     if (filterType === 'techniqueProduction') {
       this.selectedTechniqueFilter = selectElement.value;
@@ -160,13 +155,8 @@ export class LeafletCarteComponent implements OnInit {
       }
     }
 
-    console.log('Selected Project Filters:', this.selectedProjectFilters);
-    console.log('Selected Product Filters:', this.selectedProductFilters);
-    console.log('Selected Technique Filter:', this.selectedTechniqueFilter);
-
     this.updateMarkers();
   }
-
 
   public resetFilters(): void {
     this.selectedProjectFilters.clear();
@@ -192,7 +182,14 @@ export class LeafletCarteComponent implements OnInit {
           this.map.removeLayer(this.currentLocationCircle);
         }
 
-        this.currentLocationMarker = L.marker([latitude, longitude]).addTo(this.map)
+        this.currentLocationMarker = L.marker([latitude, longitude], {
+          icon: L.icon({
+            iconUrl: 'https://example.com/user-icon.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+          })
+        }).addTo(this.map)
           .bindPopup('Vous êtes ici').openPopup();
 
         this.currentLocationCircle = L.circle([latitude, longitude], {
