@@ -14,6 +14,14 @@ export class TestComponent implements OnInit {
   private map: L.Map | undefined;
   private markers: L.MarkerClusterGroup = L.markerClusterGroup(); // Initialiser avec une valeur par défaut
 
+  public selectedTypeProjet: string = '';
+  public selectedTypeActivite: string = '';
+
+  public typesProjets: string[] = [];
+  public typesActivites: string[] = [];
+
+  private allMarkers: { marker: L.Marker; typeProjet: string[]; typeActivite: string[] }[] = [];
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -41,14 +49,17 @@ export class TestComponent implements OnInit {
 
   private loadMarkers(): void {
     this.http.get<any[]>('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209').subscribe(data => {
-      // Assurez-vous que this.markers n'est pas undefined avant de l'utiliser
       if (this.markers) {
-        data.forEach(item => {
+        this.typesProjets = [...new Set(data.flatMap(item => item.list_typeprojet))];
+        this.typesActivites = [...new Set(data.flatMap(item => item.list_typeactivite))];
+
+        this.allMarkers = data.map(item => {
           const lat = parseFloat(item.lat);
           const lng = parseFloat(item.lng);
           const title = item.title || 'No Title';
           const iconUrl = item.img || 'https://example.com/default-icon.png'; // URL d'un icône par défaut
 
+          // Créer le marqueur
           const marker = L.marker([lat, lng], {
             icon: L.icon({
               iconUrl: iconUrl,
@@ -58,9 +69,28 @@ export class TestComponent implements OnInit {
             })
           }).bindPopup(`<b>${title}</b>`);
 
-          this.markers.addLayer(marker); // Ajout du marqueur au groupe de clusters
+          // Retourner un objet avec le marqueur et ses données
+          return {
+            marker: marker,
+            typeProjet: item.list_typeprojet,
+            typeActivite: item.list_typeactivite
+          };
         });
+
+        this.applyFilters(); // Appliquer les filtres après chargement des marqueurs
       }
     });
+  }
+
+  public applyFilters(): void {
+    this.markers.clearLayers(); // Nettoyer les anciens marqueurs
+
+    const filteredMarkers = this.allMarkers.filter(({ marker, typeProjet, typeActivite }) => {
+      const typeProjetsMatch = !this.selectedTypeProjet || typeProjet.includes(this.selectedTypeProjet);
+      const typeActivitesMatch = !this.selectedTypeActivite || typeActivite.includes(this.selectedTypeActivite);
+      return typeProjetsMatch && typeActivitesMatch;
+    });
+
+    filteredMarkers.forEach(({ marker }) => this.markers.addLayer(marker)); // Ajouter les marqueurs filtrés
   }
 }
