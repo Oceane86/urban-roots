@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
 })
-export class LogicComponent {
+export class LoginComponent {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   authService = inject(AuthService);

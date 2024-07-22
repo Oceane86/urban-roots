@@ -10,7 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "sourceMap": true,
+    "sourceMap": false, // Désactiver les fichiers de source map
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,

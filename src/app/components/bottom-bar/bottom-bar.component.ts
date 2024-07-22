@@ -1,3 +1,5 @@
+// src/app/components/bottom-bar/bottom-bar.component.ts
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -11,9 +13,9 @@ import { Router } from '@angular/router';
 })
 export class BottomBarComponent {
   constructor(private router: Router) {}
-  navigateTo(page: string) {
-    this.router.navigate([page]);
-   
+  navigateTo(path: string) {
+    this.router.navigate([`/${path}`]);
+
   }
 
 
