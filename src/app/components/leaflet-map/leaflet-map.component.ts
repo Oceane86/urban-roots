@@ -1,7 +1,7 @@
+import * as L from 'leaflet';
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
-import * as L from 'leaflet';
 import 'leaflet.markercluster'; // Ensure this is imported
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
