@@ -17,7 +17,6 @@ export const routes: Routes = [
   { path: 'join-us', component: JoinUsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: Profile},
-  { path: 'map', component: LeafletMapComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'guide-interactif', component: InteractiveGuideComponent },
