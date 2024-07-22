@@ -1,18 +1,28 @@
-#map {
+/* leaflet-carte.component.css */
+
+/* Styles globaux */
+body, html {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  width: 100%;
-  position: relative;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+/* Conteneur principal */
+.relative {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-button:hover {
-  background-color: #0056b3;
+/* Conteneur de la carte */
+#map {
+  height: 100%; /* Utilise tout l'espace restant après les autres éléments */
+}
+
+/* Barre de navigation ou pied de page */
+app-bottom-bar {
+  background-color: #f8f9fa; /* Couleur de fond */
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
