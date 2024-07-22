@@ -18,7 +18,6 @@ export class LeafletCarteComponent implements OnInit {
   private currentLocationMarker?: L.Marker;
   private currentLocationCircle?: L.Circle;
 
-  private markers: L.Marker[] = [];
   private allMarkersData: any[] = [];
   private selectedProjectFilters: Set<string> = new Set();
   private selectedProductFilters: Set<string> = new Set();
@@ -62,11 +61,12 @@ export class LeafletCarteComponent implements OnInit {
     this.http.get<any[]>('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209')
       .subscribe({
         next: data => {
-          if (data && Array.isArray(data) && data.length) {
+          if (Array.isArray(data)) {
+            console.log('Données des marqueurs reçues:', data);
             this.allMarkersData = data;
             this.updateMarkers();
           } else {
-            console.warn('Aucune donnée de marqueur trouvée.');
+            console.warn('Format de données invalide.');
           }
         },
         error: error => {
@@ -83,7 +83,10 @@ export class LeafletCarteComponent implements OnInit {
 
     this.markerClusterGroup.clearLayers();
     const filteredData = this.allMarkersData.filter(site => this.isVisible(site));
+    console.log('Données filtrées pour les marqueurs:', filteredData);
+
     this.totalLocations = filteredData.length;
+
     filteredData.forEach(site => {
       const lat = parseFloat(site.lat);
       const lng = parseFloat(site.lng);
@@ -94,16 +97,16 @@ export class LeafletCarteComponent implements OnInit {
         <div class="custom-popup">
           <strong>${title}</strong><br>
           ${img}<br>
-          <strong>Ville:</strong> ${site.ville}<br>
-          <strong>Code Postal:</strong> ${site.cp}<br>
+          <strong>Ville:</strong> ${site.ville || 'N/A'}<br>
+          <strong>Code Postal:</strong> ${site.cp || 'N/A'}<br>
           <strong>Ouvert au public:</strong> ${site.ouvertpublic === '1' ? 'Oui' : 'Non'}<br>
           <strong>Prix solidaires:</strong> ${site.prixsolidaires ? 'Oui' : 'Non'}<br>
           <strong>HLM:</strong> ${site.hlm === '1' ? 'Oui' : 'Non'}<br>
           <strong>QP:</strong> ${site.qpv === '1' ? 'Oui' : 'Non'}<br>
-          <strong>Type de projet:</strong> ${site.list_typeprojet.join(', ')}<br>
-          <strong>Activités:</strong> ${site.list_typeactivite.join(', ')}<br>
-          <strong>Techniques de production:</strong> ${site.list_techniqueprod.join(', ')}<br>
-          <strong>Types de production:</strong> ${site.list_typeprod.join(', ')}
+          <strong>Type de projet:</strong> ${site.list_typeprojet?.join(', ') || 'N/A'}<br>
+          <strong>Activités:</strong> ${site.list_typeactivite?.join(', ') || 'N/A'}<br>
+          <strong>Techniques de production:</strong> ${site.list_techniqueprod?.join(', ') || 'N/A'}<br>
+          <strong>Types de production:</strong> ${site.list_typeprod?.join(', ') || 'N/A'}
         </div>
       `;
 
@@ -132,11 +135,8 @@ export class LeafletCarteComponent implements OnInit {
     return isProjectTypeVisible && isProductTypeVisible && isTechniqueTypeVisible;
   }
 
-
   public onFilterChange(filterType: string, event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    console.log(`Filter Type: ${filterType}`);
-    console.log(`Selected Value: ${selectElement.value}`);
 
     if (filterType === 'techniqueProduction') {
       this.selectedTechniqueFilter = selectElement.value;
@@ -160,13 +160,8 @@ export class LeafletCarteComponent implements OnInit {
       }
     }
 
-    console.log('Selected Project Filters:', this.selectedProjectFilters);
-    console.log('Selected Product Filters:', this.selectedProductFilters);
-    console.log('Selected Technique Filter:', this.selectedTechniqueFilter);
-
     this.updateMarkers();
   }
-
 
   public resetFilters(): void {
     this.selectedProjectFilters.clear();
@@ -203,6 +198,8 @@ export class LeafletCarteComponent implements OnInit {
         }).addTo(this.map);
 
         this.map.setView([latitude, longitude], 13);
+      }, (error) => {
+        console.error('Erreur de géolocalisation:', error);
       });
     } else {
       console.error('La géolocalisation n\'est pas supportée par ce navigateur.');
