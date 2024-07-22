@@ -2,11 +2,13 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 
 @Component({
   selector: 'app-leaflet-carte',
   standalone: true,
   templateUrl: './leaflet-carte.component.html',
+  imports:[ BottomBarComponent],
   styleUrls: ['./leaflet-carte.component.css']
 })
 export class LeafletCarteComponent implements OnInit {
