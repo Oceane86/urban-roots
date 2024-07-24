@@ -5,7 +5,7 @@
     <div class="bg-opacity-50 backdrop-blur-sm rounded-lg p-6">
       <!-- Contenu centré -->
       <div class="text-center">
-        <p class="text-4xl">Commencer à utiliser l'app</p>
+        <p class="text-4xl text-white">Commencer à utiliser l'app</p>
 
         <!-- Message d'erreur -->
         <div *ngIf="showError" class="text-red-500 mt-2">
@@ -30,7 +30,7 @@
         <!-- Case à cocher pour accepter les conditions générales -->
         <div class="mt-4 flex items-center justify-center">
           <input type="checkbox" id="terms" (change)="toggleTermsAccepted($event)">
-          <label for="terms" class="ml-2">J'accepte les conditions générales</label>
+          <label for="terms" class="ml-2 text-white">J'accepte les conditions générales</label>
         </div>
       </div>
     </div>
