@@ -25,9 +25,9 @@ export class MapTestComponent implements OnInit {
     }).addTo(this.map);
 
     const markers = L.markerClusterGroup();
+
     for (let i = 0; i < 100; i++) {
-      const marker = L.marker(this.getRandomLatLng());
-      markers.addLayer(marker);
+      markers.addLayer(L.marker(this.getRandomLatLng()));
     }
 
     this.map.addLayer(markers);
