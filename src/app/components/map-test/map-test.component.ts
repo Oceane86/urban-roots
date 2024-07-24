@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import 'leaflet.markercluster';
+import 'leaflet.markercluster'; // Assurez-vous d'importer la bibliothèque de cluster ici
 
 @Component({
   selector: 'app-map-test',
@@ -24,7 +24,7 @@ export class MapTestComponent implements OnInit {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    const markers = L.markerClusterGroup();
+    const markers = L.markerClusterGroup(); // Utilisez L.markerClusterGroup ici
 
     for (let i = 0; i < 100; i++) {
       markers.addLayer(L.marker(this.getRandomLatLng()));
