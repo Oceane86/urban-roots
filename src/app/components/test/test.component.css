@@ -1,0 +1,33 @@
+/* Assurez-vous que le conteneur principal occupe toute la largeur disponible */
+.container {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px; /* Assurez-vous que la navbar n'écrase pas le contenu */
+}
+
+/* Assurez-vous que la carte occupe toute la largeur et a une hauteur spécifique */
+.map-container {
+  height: 400px; /* Ajustez la hauteur selon vos besoins */
+  width: 100%;
+}
+
+/* Positionnez la navbar au bas de la page */
+app-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white; /* Assurez-vous que la couleur de fond est appropriée */
+  z-index: 1000; /* Assurez-vous que le z-index est supérieur à celui de la carte */
+}
+
+/* Styles Responsifs */
+@media (max-width: 768px) {
+  .map-container {
+    height: 300px; /* Ajustez la hauteur pour les petits écrans */
+  }
+
+  .container {
+    padding-bottom: 70px; /* Augmentez si nécessaire pour éviter que la navbar n'écrase le contenu */
+  }
+}

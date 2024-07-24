@@ -23,6 +23,5 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
   { path: 'replyId', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'carte', component: LeafletCarteComponent },
-  { path: 'test', component: TestComponent }
+  { path: 'carte', component: TestComponent }
 ];
