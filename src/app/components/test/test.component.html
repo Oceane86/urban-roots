@@ -1,66 +1,41 @@
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.0/dist/MarkerCluster.Default.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.0/dist/leaflet.markercluster.js"></script>
-
-
-<div class="bg-gray-100 p-6 rounded-lg shadow-md w-full">
+<div>
   <!-- Formulaire de filtrage -->
-  <form (ngSubmit)="applyFilters()" class="space-y-4">
-    <div class="form-group">
-      <!-- Filtre par Type de Projet -->
-      <label for="typeprojet" class="block font-bold mb-1">Type de Projet:</label>
-      <select id="typeprojet" [(ngModel)]="selectedTypeProjet" name="typeprojet" class="w-full p-2 border border-gray-300 rounded">
-        <option value="">Tous</option>
-        <option *ngFor="let type of typesProjets" [value]="type.value">{{ type.label }}</option>
-      </select>
-    </div>
+  <form (ngSubmit)="applyFilters()">
+    <!-- Filtre par Type de Projet -->
+    <label for="typeprojet">Type de Projet:</label>
+    <select id="typeprojet" [(ngModel)]="selectedTypeProjet" name="typeprojet">
+      <option value="">Tous</option>
+      <option *ngFor="let type of typesProjets" [value]="type">{{ type }}</option>
+    </select>
 
-    <div class="form-group">
-      <!-- Filtre par Type d'Activité -->
-      <label for="typeactivite" class="block font-bold mb-1">Type d'Activité:</label>
-      <select id="typeactivite" [(ngModel)]="selectedTypeActivite" name="typeactivite" class="w-full p-2 border border-gray-300 rounded">
-        <option value="">Tous</option>
-        <option *ngFor="let type of typesActivites" [value]="type.value">{{ type.label }}</option>
-      </select>
-    </div>
+    <!-- Filtre par Type d'Activité -->
+    <label for="typeactivite">Type d'Activité:</label>
+    <select id="typeactivite" [(ngModel)]="selectedTypeActivite" name="typeactivite">
+      <option value="">Tous</option>
+      <option *ngFor="let type of typesActivites" [value]="type">{{ type }}</option>
+    </select>
 
-    <div class="form-group">
-      <!-- Filtre par Technique de Production -->
-      <label for="techniqueprod" class="block font-bold mb-1">Technique de Production:</label>
-      <select id="techniqueprod" [(ngModel)]="selectedTechniqueProd" name="techniqueprod" class="w-full p-2 border border-gray-300 rounded">
-        <option value="">Toutes</option>
-        <option *ngFor="let technique of techniquesProd" [value]="technique.value">{{ technique.label }}</option>
-      </select>
-    </div>
+    <!-- Filtre par Technique de Production -->
+    <label for="techniqueprod">Technique de Production:</label>
+    <select id="techniqueprod" [(ngModel)]="selectedTechniqueProd" name="techniqueprod">
+      <option value="">Tous</option>
+      <option *ngFor="let technique of techniquesProd" [value]="technique">{{ technique }}</option>
+    </select>
 
-    <div class="form-group">
-      <!-- Filtre par Activité -->
-      <label for="activite" class="block font-bold mb-1">Activité:</label>
-      <select id="activite" [(ngModel)]="selectedActivite" name="activite" class="w-full p-2 border border-gray-300 rounded">
-        <option value="">Toutes</option>
-        <option *ngFor="let activite of activites" [value]="activite.value">{{ activite.label }}</option>
-      </select>
-    </div>
+    <!-- Filtre par Type de Produit -->
+    <label for="typeprod">Type de Produit:</label>
+    <select id="typeprod" [(ngModel)]="selectedTypeProd" name="typeprod">
+      <option value="">Tous</option>
+      <option *ngFor="let produit of typesProd" [value]="produit">{{ produit }}</option>
+    </select>
 
-    <div class="mt-4 flex space-x-4">
-      <button type="submit" class="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-        Appliquer les filtres
-      </button>
-      <button type="button" (click)="resetFilters()" class="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
-        Réinitialiser les filtres
-      </button>
-    </div>
+    <!-- Bouton pour appliquer les filtres -->
+    <button type="submit">Appliquer les filtres</button>
   </form>
 
   <!-- Afficher le nombre d'établissements -->
-  <p class="mt-4">Nombre d'établissements affichés : {{ numberOfEstablishments }}</p>
+  <p>Nombre d'établissements affichés : {{ numberOfEstablishments }}</p>
 
   <!-- Conteneur pour la carte Leaflet -->
-  <div id="map" class="map-container mt-4 w-full mb-16" style="height: 500px;"></div>
-  <app-bottom-bar></app-bottom-bar>
-
-
+  <div id="map" style="height: 500px;"></div>
 </div>
-

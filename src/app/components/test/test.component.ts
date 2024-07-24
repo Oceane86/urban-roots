@@ -2,34 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
+import { FormsModule } from '@angular/forms'; // Importation nécessaire pour ngModel
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [FormsModule, CommonModule, BottomBarComponent],
+  imports: [FormsModule], // Importer FormsModule ici
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
   private map: L.Map | undefined;
-  private markers: L.MarkerClusterGroup = L.markerClusterGroup();
-  private userMarker: L.Marker | undefined;
+  private markers: L.MarkerClusterGroup = L.markerClusterGroup(); // Initialiser avec une valeur par défaut
+  private userMarker: L.Marker | undefined; // Marqueur pour la position de l'utilisateur
 
   public selectedTypeProjet: string = '';
   public selectedTypeActivite: string = '';
-  public selectedTechniqueProd: string = '';
-  public selectedActivite: string = '';
+  public selectedTechniqueProd: string = ''; // Ajouté
+  public selectedTypeProd: string = ''; // Ajouté
 
-  public typesProjets: { value: string; label: string }[] = [];
-  public typesActivites: { value: string; label: string }[] = [];
-  public techniquesProd: { value: string; label: string }[] = [];
-  public activites: { value: string; label: string }[] = [];
+  public typesProjets: string[] = [];
+  public typesActivites: string[] = [];
+  public techniquesProd: string[] = []; // Ajouté
+  public typesProd: string[] = []; // Ajouté
 
-  private allMarkers: { marker: L.Marker; typeProjet: string[]; typeActivite: string[]; techniqueProd: string[]; activite: string[] }[] = [];
+  private allMarkers: { marker: L.Marker; typeProjet: string[]; typeActivite: string[] }[] = [];
 
+  // Propriété pour stocker le nombre d'établissements affichés
   public numberOfEstablishments: number = 0;
 
   constructor(private http: HttpClient) {}
@@ -37,12 +36,12 @@ export class TestComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
     this.loadMarkers();
-    this.showUserLocation();
+    this.showUserLocation(); // Ajouté pour afficher la position de l'utilisateur
   }
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [46.603354, 1.888334],
+      center: [46.603354, 1.888334], // Centre approximatif de la France
       zoom: 6,
       layers: [
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -57,95 +56,39 @@ export class TestComponent implements OnInit {
     }
   }
 
-  private getIconColor(type: string): string {
-    switch (type) {
-      case 'ferme-urbaine-participative': return 'red';
-      case 'ferme-urbaine-specialisee': return 'blue';
-      case 'jardin-potager': return 'green';
-      case 'herbes-aromatiques': return 'purple';
-      case 'legumes': return 'orange';
-      case 'plants': return 'pink';
-      default: return 'grey';
-    }
-  }
-
-  private createMarkerIcon(type: string): L.Icon {
-    const color = this.getIconColor(type);
-    return L.divIcon({
-      className: 'custom-icon',
-      html: `<div style="background-color: ${color}; width: 32px; height: 32px; border-radius: 50%;"></div>`,
-      iconSize: [32, 32]
-    }) as L.Icon; // Type assertion to make sure TypeScript recognizes it correctly
-  }
-
-
   private loadMarkers(): void {
-    this.http.get<any[]>('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209')
-      .subscribe({
-        next: data => {
-          if (this.map) {
-            const projetsSet = new Set<string>();
-            const activitesSet = new Set<string>();
-            const techniquesSet = new Set<string>();
-            const typesProdSet = new Set<string>();
+    this.http.get<any[]>('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209').subscribe(data => {
+      if (this.map) {
+        this.typesProjets = [...new Set(data.flatMap(item => item.list_typeprojet))];
+        this.typesActivites = [...new Set(data.flatMap(item => item.list_typeactivite))];
+        this.techniquesProd = [...new Set(data.flatMap(item => item.list_techniqueprod))]; // Ajouté
+        this.typesProd = [...new Set(data.flatMap(item => item.list_typeprod))]; // Ajouté
 
-            data.forEach(item => {
-              item.list_typeprojet.forEach((type: string) => projetsSet.add(type));
-              item.list_typeactivite.forEach((type: string) => activitesSet.add(type));
-              item.list_techniqueprod.forEach((tech: string) => techniquesSet.add(tech));
-              item.list_typeprod.forEach((act: string) => typesProdSet.add(act));
-            });
+        this.allMarkers = data.map(item => {
+          const lat = parseFloat(item.lat);
+          const lng = parseFloat(item.lng);
+          const title = item.title || 'No Title';
+          const iconUrl = item.img || 'https://example.com/default-icon.png'; // URL d'un icône par défaut
 
-            this.typesProjets = Array.from(projetsSet).map(value => ({
-              value: value,
-              label: this.formatLabel(value)
-            }));
+          const marker = L.marker([lat, lng], {
+            icon: L.icon({
+              iconUrl: iconUrl,
+              iconSize: [32, 32],
+              iconAnchor: [16, 32],
+              popupAnchor: [0, -32]
+            })
+          }).bindPopup(`<b>${title}</b>`);
 
-            this.typesActivites = Array.from(activitesSet).map(value => ({
-              value: value,
-              label: this.formatLabel(value)
-            }));
+          return {
+            marker: marker,
+            typeProjet: item.list_typeprojet,
+            typeActivite: item.list_typeactivite
+          };
+        });
 
-            this.techniquesProd = Array.from(techniquesSet).map(value => ({
-              value: value,
-              label: this.formatLabel(value)
-            }));
-
-            this.activites = Array.from(typesProdSet).map(value => ({
-              value: value,
-              label: this.formatLabel(value)
-            }));
-
-            this.allMarkers = data.map(item => {
-              const lat = parseFloat(item.lat);
-              const lng = parseFloat(item.lng);
-              const title = item.title || 'No Title';
-              const typeProjet = item.list_typeprojet[0] || 'default'; // Utiliser le premier type ou 'default' si vide
-
-              const marker = L.marker([lat, lng], {
-                icon: this.createMarkerIcon(typeProjet)
-              }).bindPopup(`<b>${title}</b>`);
-
-              return {
-                marker: marker,
-                typeProjet: item.list_typeprojet,
-                typeActivite: item.list_typeactivite,
-                techniqueProd: item.list_techniqueprod,
-                activite: item.list_typeprod
-              };
-            });
-
-            this.applyFilters();
-          }
-        },
-        error: err => console.error('Erreur lors du chargement des marqueurs:', err)
-      });
-  }
-
-  private formatLabel(value: string): string {
-    return value
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, char => char.toUpperCase());
+        this.applyFilters(); // Appliquer les filtres après chargement des marqueurs
+      }
+    });
   }
 
   private showUserLocation(): void {
@@ -155,15 +98,17 @@ export class TestComponent implements OnInit {
         const lng = position.coords.longitude;
 
         if (this.map) {
+          // Ajouter un marqueur pour la position de l'utilisateur
           this.userMarker = L.marker([lat, lng], {
             icon: L.icon({
-              iconUrl: 'https://example.com/user-icon.png',
+              iconUrl: 'https://example.com/user-icon.png', // URL d'un icône pour l'utilisateur
               iconSize: [32, 32],
               iconAnchor: [16, 32],
               popupAnchor: [0, -32]
             })
           }).bindPopup('Vous êtes ici').addTo(this.map);
 
+          // Centrer la carte sur la position de l'utilisateur
           this.map.setView([lat, lng], 12);
         }
       }, error => {
@@ -175,28 +120,19 @@ export class TestComponent implements OnInit {
   }
 
   public applyFilters(): void {
-    if (!this.map) return;
+    if (!this.map) return; // Vérifie si la carte est définie
 
-    this.markers.clearLayers();
+    this.markers.clearLayers(); // Efface les anciens marqueurs
 
-    const filteredMarkers = this.allMarkers.filter(({ typeProjet, typeActivite, techniqueProd, activite }) => {
+    const filteredMarkers = this.allMarkers.filter(({ typeProjet, typeActivite }) => {
       const typeProjetsMatch = !this.selectedTypeProjet || typeProjet.includes(this.selectedTypeProjet);
       const typeActivitesMatch = !this.selectedTypeActivite || typeActivite.includes(this.selectedTypeActivite);
-      const techniqueProdMatch = !this.selectedTechniqueProd || techniqueProd.includes(this.selectedTechniqueProd);
-      const activiteMatch = !this.selectedActivite || activite.includes(this.selectedActivite);
-      return typeProjetsMatch && typeActivitesMatch && techniqueProdMatch && activiteMatch;
+      return typeProjetsMatch && typeActivitesMatch;
     });
 
+    // Mettre à jour le nombre d'établissements
     this.numberOfEstablishments = filteredMarkers.length;
 
     filteredMarkers.forEach(({ marker }) => this.markers.addLayer(marker));
-  }
-
-  public resetFilters(): void {
-    this.selectedTypeProjet = '';
-    this.selectedTypeActivite = '';
-    this.selectedTechniqueProd = '';
-    this.selectedActivite = '';
-    this.applyFilters();
   }
 }
