@@ -10,7 +10,6 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { ForumComponent } from './pages/forum/forum.component';
 import { ReplyPageComponent } from './pages/reply/reply.component';
 import { TestComponent } from './components/test/test.component';
-import { MapTestComponent } from './map-test/map-test.component';
 
 
 export const routes: Routes = [
@@ -24,6 +23,5 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
   { path: 'replyId', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'carte4', component: TestComponent },
-  { path: 'map-test', component: MapTestComponent}
+  { path: 'carte4', component: TestComponent }
 ];
