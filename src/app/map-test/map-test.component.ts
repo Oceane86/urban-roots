@@ -12,9 +12,9 @@ import { BottomBarComponent } from '../components/bottom-bar/bottom-bar.componen
   standalone: true,
   imports: [BottomBarComponent,CommonModule,FormsModule],
   templateUrl: './map-test.component.html',
-  styleUrl: './map-test.component.css'
+  styleUrls: ['./map-test.component.css']
 })
-export class MapTestComponent {
+export class MapTestComponent implements OnInit {
 
   private map: L.Map | undefined;
   private markers: L.MarkerClusterGroup = L.markerClusterGroup();
