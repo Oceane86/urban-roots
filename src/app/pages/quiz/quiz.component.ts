@@ -16,7 +16,7 @@ interface Article {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],  // Inclure RouterModule ici
+  imports: [CommonModule, FormsModule, RouterModule], 
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
