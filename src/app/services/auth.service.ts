@@ -57,7 +57,6 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this.firebaseAuth, provider)
       .then((result) => {
-        // Optionally, update user profile if needed
         if (result.user) {
           updateProfile(result.user, {
             displayName: result.user.displayName,
