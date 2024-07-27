@@ -1,32 +1,183 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
+import 'leaflet.fullscreen'; // Import the fullscreen plugin
+import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
+  standalone: true,
+  imports: [FormsModule]
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements AfterViewInit, OnDestroy {
+  private map!: L.Map;
+  public searchQuery: string = '';
+  public filteredGardens: any[] = [];
+  public selectedGarden: any = null;
+  public filters = {
+    typeprojet: '',
+    typeactivite: '',
+    techniqueprod: ''
+  };
+  private urbanSpaces: any[] = [];
+  public resultsCount: number = 0;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {
-    this.initMap();
+  ngAfterViewInit(): void {
+    this.loadMap();
   }
 
-  private initMap(): void {
-    const map = L.map('map').setView([51.505, -0.09], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
-    for (let i = 0; i < 100; i++) {
-      const lat = 51.505 + (Math.random() - 0.5) * 0.1;
-      const lng = -0.09 + (Math.random() - 0.5) * 0.1;
-      const marker = L.marker([lat, lng]);
-      marker.addTo(map);
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.remove(); // Clean up the map instance
     }
+  }
+
+  private getCurrentPosition(): Observable<any> {
+    return new Observable((observer: Subscriber<any>) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position: GeolocationPosition) => {
+            observer.next({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            });
+            observer.complete();
+          },
+          (error: GeolocationPositionError) => observer.error(error)
+        );
+      } else {
+        observer.error('Geolocation not available');
+      }
+    });
+  }
+
+  private loadMap(): void {
+    if (this.map) {
+      return; // Map is already initialized
+    }
+
+    this.map = L.map('map', {
+      center: [46.603354, 1.888334],
+      zoom: 6,
+      layers: [
+        L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=' + environment.mapbox.accessToken, {
+          attribution: '',
+          maxZoom: 18,
+          tileSize: 512,
+          zoomOffset: -1
+        })
+      ]
+    });
+
+    this.loadMarkers();
+
+    this.getCurrentPosition().subscribe(
+      (position: any) => {
+        const userIcon = L.icon({
+          iconUrl: 'assets/images/marker-icon.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+        });
+
+        const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon });
+
+        L.circle([position.latitude, position.longitude], {
+          radius: position.accuracy / 2,
+          color: 'red',
+          fillColor: 'red',
+          fillOpacity: 0.2,
+        }).addTo(this.map);
+
+        userMarker.addTo(this.map);
+        this.map.setView([position.latitude, position.longitude], 13); // Center the map on the user's location
+      },
+      (error: any) => {
+        console.error('Failed to get user position:', error);
+      }
+    );
+  }
+
+  private loadMarkers(): void {
+    this.http.get('https://www.observatoire-agriculture-urbaine.org/json/listsites.php?v=1720789221209')
+      .subscribe(
+        (data: any) => {
+          this.urbanSpaces = data; // Store the urban spaces data
+          this.applyFilters(); // Apply filters when the data is loaded
+        },
+        (error: any) => {
+          console.error('Failed to load markers:', error);
+        }
+      );
+  }
+
+  private createPopupContent(garden: any): string {
+    let content = `<b>${garden.title}</b><br>`;
+    content += `<p>${garden.ville}, ${garden.cp}</p>`;
+    content += `<p>Type de projet: ${garden.list_typeprojet.join(', ')}</p>`;
+    content += `<p>Activités: ${garden.list_typeactivite.join(', ')}</p>`;
+    content += `<p>Techniques de production: ${garden.list_techniqueprod.join(', ')}</p>`;
+    content += `<p>Types de production: ${garden.list_typeprod.join(', ')}</p>`;
+    if (garden.img) {
+      content += `<img src="${garden.img}" alt="${garden.title}" style="width:100px;height:auto;">`;
+    }
+    return content;
+  }
+
+  private updatePopupContent(garden: any): void {
+    this.selectedGarden = garden;
+    console.log(this.selectedGarden);
+  }
+
+  public applyFilters(): void {
+    this.filteredGardens = this.urbanSpaces.filter(space => {
+      const matchesTypeProjet = this.filters.typeprojet ? space.list_typeprojet.includes(this.filters.typeprojet) : true;
+      const matchesTypeActivite = this.filters.typeactivite ? space.list_typeactivite.includes(this.filters.typeactivite) : true;
+      const matchesTechniqueProd = this.filters.techniqueprod ? space.list_techniqueprod.includes(this.filters.techniqueprod) : true;
+      return matchesTypeProjet && matchesTypeActivite && matchesTechniqueProd;
+    });
+    this.resultsCount = this.filteredGardens.length; // Update the number of results
+    this.updateMapMarkers();
+  }
+
+  public resetFilters(): void {
+    this.filters = {
+      typeprojet: '',
+      typeactivite: '',
+      techniqueprod: ''
+    };
+    this.applyFilters();
+  }
+
+  private updateMapMarkers(): void {
+    if (this.map) {
+      this.map.eachLayer((layer) => {
+        if (layer instanceof L.Marker && !layer.getPopup()) {
+          this.map.removeLayer(layer);
+        }
+      });
+    }
+
+    const gardenIcon = L.icon({
+      iconUrl: 'assets/images/garden-icon.png',
+      iconSize: [70, 70],
+      iconAnchor: [35, 70], // Center the icon properly
+      popupAnchor: [0, -70], // Adjust popup position relative to icon
+    });
+
+    this.filteredGardens.forEach((garden: any) => {
+      const gardenMarker = L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: gardenIcon })
+        .bindPopup(this.createPopupContent(garden))
+        .on('click', () => this.updatePopupContent(garden));
+
+      gardenMarker.addTo(this.map);
+    });
   }
 }
