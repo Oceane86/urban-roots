@@ -1,2 +1,59 @@
 <p>map works!</p>
+
+<!-- src/app/components/leaflet-map/leaflet-map.component.html -->
+
+<div class="filter-container p-4 bg-white shadow-lg rounded-lg">
+  <h4>Filtres</h4>
+  <form (ngSubmit)="applyFilters()">
+    <div class="form-group mb-3">
+      <label for="typeprojet">Type de Projet</label>
+      <select id="typeprojet" class="form-control" [(ngModel)]="filters.typeprojet" name="typeprojet">
+        <option value="">Tous</option>
+        <option value="ferme-urbaine-participative">Ferme Urbaine Participative</option>
+        <option value="jardin-potager">Jardin Potager</option>
+        <!-- Ajoutez d'autres options selon vos données -->
+      </select>
+    </div>
+    <div class="form-group mb-3">
+      <label for="typeactivite">Type d'Activité</label>
+      <select id="typeactivite" class="form-control" [(ngModel)]="filters.typeactivite" name="typeactivite">
+        <option value="">Toutes</option>
+        <option value="animation">Animation</option>
+        <option value="compostage">Compostage</option>
+        <option value="ecopaturage">Écopâturage</option>
+        <option value="production">Production</option>
+        <!-- Ajoutez d'autres options selon vos données -->
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="techniqueprod">Technique de Production</label>
+      <select id="techniqueprod" class="form-control" [(ngModel)]="filters.techniqueprod" name="techniqueprod">
+        <option value="">Toutes</option>
+        <option value="permaculture">Permaculture</option>
+        <option value="pleine-terre">Pleine Terre</option>
+        <!-- Ajoutez d'autres options selon vos données -->
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Appliquer les filtres</button>
+    <button type="button" class="btn btn-secondary" (click)="resetFilters()">Réinitialiser les filtres</button>
+  </form>
+
+  <!-- Afficher le nombre de résultats -->
+  <p class="mt-3">Nombre de résultats : {{ resultsCount }}</p>
+</div>
+
 <div id="map" style="height: 600px;"></div>
+
+
+
+<div class="popup-container" [style.display]="selectedGarden ? 'block' : 'none'">
+  <div class="popup-content">
+    <img [src]="selectedGarden?.imageUrl" alt="{{ selectedGarden?.name }}" class="popup-image" />
+    <div class="popup-details">
+      <h3>{{ selectedGarden?.name }}</h3>
+      <p>{{ selectedGarden?.details }}</p>
+    </div>
+  </div>
+</div>

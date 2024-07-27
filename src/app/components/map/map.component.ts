@@ -1,9 +1,9 @@
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.fullscreen';
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
-import * as L from 'leaflet';
-import 'leaflet.fullscreen'; // Import the fullscreen plugin
-import 'leaflet.markercluster'; // Import leaflet.markercluster
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 
