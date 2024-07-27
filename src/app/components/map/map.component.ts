@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen'; // Import the fullscreen plugin
+import 'leaflet.markercluster'; // Import leaflet.markercluster
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 
@@ -15,8 +16,7 @@ import { environment } from '../../../environments/environment';
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  private markersLayerGroup!: L.LayerGroup;
-  private markers: L.Marker[] = [];
+  private markersLayerGroup!: L.MarkerClusterGroup; // Use MarkerClusterGroup
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
@@ -78,7 +78,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       ]
     });
 
-    this.markersLayerGroup = L.layerGroup().addTo(this.map);
+    this.markersLayerGroup = L.markerClusterGroup(); // Initialize MarkerClusterGroup
+    this.map.addLayer(this.markersLayerGroup); // Add to the map
 
     this.loadMarkers();
 
@@ -107,8 +108,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         console.error('Failed to get user position:', error);
       }
     );
-
-    this.map.on('zoomend', () => this.updateClusters());
   }
 
   private loadMarkers(): void {
@@ -150,7 +149,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       return matchesTypeProjet && matchesTypeActivite && matchesTechniqueProd;
     });
     this.resultsCount = this.filteredGardens.length; // Update the number of results
-    this.updateClusters();
+    this.updateMapMarkers();
   }
 
   public resetFilters(): void {
@@ -162,84 +161,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.applyFilters();
   }
 
-  private updateClusters(): void {
-    this.markersLayerGroup.clearLayers();
+  private updateMapMarkers(): void {
+    this.markersLayerGroup.clearLayers(); // Clear existing markers
 
-    const zoomLevel = this.map.getZoom();
-    const maxZoomForClusters = 12; // Define a max zoom level for clustering
-
-    if (zoomLevel <= maxZoomForClusters) {
-      // Group markers based on their proximity for clustering effect
-      this.createClusters();
-    } else {
-      // Show individual markers if zoomed in
-      this.filteredGardens.forEach((garden: any) => {
-        const gardenMarker = L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: this.getGardenIcon() })
-          .bindPopup(this.createPopupContent(garden))
-          .on('click', () => this.updatePopupContent(garden));
-
-        gardenMarker.addTo(this.markersLayerGroup);
-      });
-    }
-  }
-
-  private createClusters(): void {
-    const markerGroups: L.Marker[][] = [];
-    const clusterRadius = 0.05; // Approximate distance to group markers into clusters
-
-    this.filteredGardens.forEach((garden: any) => {
-      const position = L.latLng(parseFloat(garden.lat), parseFloat(garden.lng));
-      let addedToCluster = false;
-
-      markerGroups.forEach(group => {
-        if (group.length > 0 && position.distanceTo(group[0].getLatLng()) < clusterRadius * 100000) {
-          group.push(this.createMarker(garden));
-          addedToCluster = true;
-        }
-      });
-
-      if (!addedToCluster) {
-        markerGroups.push([this.createMarker(garden)]);
-      }
-    });
-
-    markerGroups.forEach(group => {
-      if (group.length === 1) {
-        group[0].addTo(this.markersLayerGroup);
-      } else {
-        this.addClusterToMap(group);
-      }
-    });
-  }
-
-  private createMarker(garden: any): L.Marker {
-    return L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: this.getGardenIcon() })
-      .bindPopup(this.createPopupContent(garden))
-      .on('click', () => this.updatePopupContent(garden));
-  }
-
-  private addClusterToMap(group: L.Marker[]): void {
-    const clusterGroup = L.layerGroup(group);
-    clusterGroup.addTo(this.markersLayerGroup);
-
-    // Optional: Create a custom icon or popup for the cluster
-    const clusterIcon = L.divIcon({
-      className: 'cluster-icon',
-      html: `<div>${group.length}</div>`,
-      iconSize: [40, 40]
-    });
-
-    const clusterMarker = L.marker(group[0].getLatLng(), { icon: clusterIcon });
-    clusterMarker.bindPopup(`Group of ${group.length} markers`);
-    clusterMarker.addTo(this.markersLayerGroup);
-  }
-
-  private getGardenIcon(): L.Icon {
-    return L.icon({
+    const gardenIcon = L.icon({
       iconUrl: 'assets/images/garden-icon.png',
       iconSize: [70, 70],
       iconAnchor: [35, 70], // Center the icon properly
       popupAnchor: [0, -70], // Adjust popup position relative to icon
+    });
+
+    this.filteredGardens.forEach((garden: any) => {
+      const gardenMarker = L.marker([parseFloat(garden.lat), parseFloat(garden.lng)], { icon: gardenIcon })
+        .bindPopup(this.createPopupContent(garden))
+        .on('click', () => this.updatePopupContent(garden));
+
+      this.markersLayerGroup.addLayer(gardenMarker); // Add to MarkerClusterGroup
     });
   }
 }
