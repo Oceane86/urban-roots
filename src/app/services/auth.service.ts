@@ -1,7 +1,10 @@
+// src/app/services/auth.service.ts
+
 import { inject, Injectable, signal } from "@angular/core";
-import { Auth, createUserWithEmailAndPassword, updateProfile, user } from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, updateProfile, user, sendPasswordResetEmail, sendEmailVerification } from "@angular/fire/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Observable, from } from "rxjs";
+import { Observable, from, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { UserInterface } from "../user.interface";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
@@ -10,8 +13,8 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 })
 export class AuthService {
   firebaseAuth = inject(Auth);
-  user$ = user(this.firebaseAuth)
-  currentUserSig = signal<UserInterface | null | undefined>(undefined)
+  user$ = user(this.firebaseAuth);
+  currentUserSig = signal<UserInterface | null | undefined>(undefined);
 
   private logoutTimer: any;
 
@@ -24,7 +27,10 @@ export class AuthService {
       this.firebaseAuth,
       email,
       password
-    ).then(response => updateProfile(response.user, { displayName: username }));
+    ).then(response => {
+      updateProfile(response.user, { displayName: username });
+      sendEmailVerification(response.user);
+    });
 
     return from(promise);
   }
@@ -52,7 +58,6 @@ export class AuthService {
     return this.firebaseAuth.currentUser;
   }
 
-
   signInWithGoogle(): Promise<void> {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this.firebaseAuth, provider)
@@ -62,11 +67,22 @@ export class AuthService {
             displayName: result.user.displayName,
             photoURL: result.user.photoURL,
           });
+          sendEmailVerification(result.user);
         }
       });
   }
 
-
+  sendPasswordResetEmail(email: string): Observable<void> {
+    const promise = sendPasswordResetEmail(this.firebaseAuth, email);
+    return from(promise).pipe(
+      catchError((error) => {
+        // Loggez l'erreur pour le débogage
+        console.error('Erreur lors de l\'envoi du lien de réinitialisation du mot de passe:', error);
+        // Propager l'erreur pour qu'elle puisse être traitée par le composant
+        return throwError(() => new Error(error.message));
+      })
+    );
+  }
 
   private setupActivityListeners(): void {
     const events = ['mousemove', 'keydown', 'click'];
@@ -81,6 +97,6 @@ export class AuthService {
     }
     this.logoutTimer = setTimeout(() => {
       this.logout().subscribe();
-    }, 20 * 60 * 1000); // 20 minutes in milliseconds
+    }, 20 * 60 * 1000); // 20 minutes en millisecondes
   }
 }

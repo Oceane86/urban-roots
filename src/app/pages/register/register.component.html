@@ -1,43 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Page</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-green-600 flex items-center justify-center h-screen">
-  <div class="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    <div class="text-center mb-6">
-      <img src="path-to-logo.png" alt="Plantio" class="mx-auto mb-4" />
-      <h1 class="text-2xl font-semibold text-green-600">Register on Plantio</h1>
-      <p class="text-gray-600">Create an Aepod account, We can’t wait to have you.</p>
+<body class="bg-[#20493C] flex flex-col items-center justify-center min-h-screen">
+  <div class="w-full px-4 pt-6 pb-8 mb-4 max-w-xl">
+    <div class="text-left mb-6">
+      <img src="../../../assets/img/logo_urbanroots.png" alt="Urbanroots_logo" class="w-7 h-11 mb-4" />
     </div>
-    
-    @if (errorMessage) {
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-        {{ errorMessage }}
-      </div>
-    }
+    <div class="text-left leading-10 mb-4">
+      <h1 class="text-2xl font-semibold text-[#B7FA61]">Créer un compte</h1>
+      <p class="text-white mt-2">Complétez le formulaire pour créer un compte. Cela prend moins d'une minute.</p>
+    </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-      <div>
-        <input type="text" placeholder="Username" formControlName="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4 mb-4">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
+      <div class="mb-4">
+        <input type="text" placeholder="Username" formControlName="username"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <div *ngIf="form.controls.username.touched && form.controls.username.invalid" class="text-red-500 text-sm mt-2">
+          <div *ngIf="form.controls.username.errors?.['required']">Le nom d'utilisateur est requis.</div>
+          <div *ngIf="form.controls.username.errors?.['minlength']">Le nom d'utilisateur doit contenir au moins 3 caractères.</div>
+        </div>
       </div>
-      <div>
-        <input type="text" placeholder="Email" formControlName="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <div class="mb-4">
+        <input type="email" placeholder="Email" formControlName="email"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <div *ngIf="form.controls.email.touched && form.controls.email.invalid" class="text-red-500 text-sm mt-2">
+          <div *ngIf="form.controls.email.errors?.['required']">L'email est requis.</div>
+          <div *ngIf="form.controls.email.errors?.['email']">L'email n'est pas valide.</div>
+        </div>
       </div>
-      <div>
-        <input type="password" placeholder="Password" formControlName="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <div class="mb-4">
+        <input type="password" placeholder="Mots de passe" formControlName="password"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <div *ngIf="form.controls.password.touched && form.controls.password.invalid" class="text-red-500 text-sm mt-2">
+          <div *ngIf="form.controls.password.errors?.['required']">Le mot de passe est requis.</div>
+          <div *ngIf="form.controls.password.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères.</div>
+          <div *ngIf="form.controls.password.errors?.['passwordStrength']">Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.</div>
+        </div>
       </div>
-      <div class="flex items-center justify-center">
-        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Sign Up</button>
+      <div class="flex justify-center">
+        <button type="submit"
+          class="bg-[#B7FA61] w-full hover:bg-[#A1E555] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">S'inscrire</button>
       </div>
     </form>
-    
+
     <div class="text-center mt-4">
-      <p class="text-gray-600">Already have an account? <a href="#" class="text-green-600 hover:text-green-800">Login</a></p>
+      <p class="text-white relative">
+        <span class="absolute left-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-white w-2/5"></span>
+        ou
+        <span class="absolute right-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-white w-2/5"></span>
+      </p>
+      <p class="mt-4">
+        <a href="/login" class="text-[#B7FA61] hover:text-green-800">Déjà un compte ? Se connecter</a>
+      </p>
     </div>
   </div>
 </body>
-</html>

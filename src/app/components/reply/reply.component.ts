@@ -1,8 +1,3 @@
-
-
-// src/app/pages/reply/reply.component.ts
-
-
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Firestore, doc, updateDoc, arrayUnion, getDoc } from '@angular/fire/firestore';
@@ -16,7 +11,7 @@ import { Location } from '@angular/common';
   standalone: true,
   templateUrl: './reply.component.html',
   styleUrls: ['./reply.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule] 
 })
 export class ReplyPageComponent implements OnInit {
   @ViewChild('replyInput') replyInput!: ElementRef<HTMLTextAreaElement>;
@@ -51,10 +46,10 @@ export class ReplyPageComponent implements OnInit {
       console.error("Post not found!");
     }
   }
-
+  
   async sendReply() {
     if (!this.post || !this.replyInput) return;
-
+  
     const replyContent = this.replyInput.nativeElement.value.trim();
     if (replyContent && this.user) {
       const postId = this.post.id;
@@ -63,13 +58,13 @@ export class ReplyPageComponent implements OnInit {
         console.error("Post ID is undefined.");
         return;
       }
-
+  
       const postDoc = doc(this.firestore, `posts/${postId}`);
       const newReply = {
         content: replyContent,
         email: this.user.email
       };
-
+  
       try {
         await updateDoc(postDoc, {
           replies: arrayUnion(newReply)
@@ -89,4 +84,4 @@ export class ReplyPageComponent implements OnInit {
   goBack(route: string) {
     this.router.navigate([route]);
   }
-}
+}  
