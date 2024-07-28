@@ -1,3 +1,5 @@
+<!-- src/app/pages/quiz/quiz.component.html -->
+
 <div class="join-us h-screen flex flex-col items-center justify-center bg-[#20493C] p-4">
   <h1 class="text-2xl font-semibold text-[#B7FA61] text-center mb-4">Quiz sur le Jardinage Durable</h1>
 
@@ -36,33 +38,29 @@
 
     <!-- Cartes pour ressources supplémentaires -->
     <div class="container bg-[#20493C]">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 h-full bg-[#20493C]">
-      <div class="card bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="bg-[#B7FA61] h-32 flex items-center justify-center">
-          <img src="path/to/image2.jpg" alt="Image 2" class="w-16 h-16 object-cover">
+      <div class="grid grid-cols-1 sm:grid-cols-1 gap-4 mt-8 bg-[#20493C] p-4 rounded-lg">
+        <div class="card bg-white shadow-lg rounded-lg overflow-hidden">
+          <div class="bg-[#B7FA61] h-32 flex items-center justify-center">
+            <img src="path/to/image2.jpg" alt="Image 2" class="w-16 h-16 object-cover">
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Ressources Supplémentaires</h3>
+            <p class="text-gray-700 mb-4">Accédez à des ressources supplémentaires pour approfondir vos connaissances sur le jardinage durable.</p>
+            <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Voir Plus</a>
+          </div>
         </div>
-        <div class="p-4">
-          <h3 class="text-xl font-semibold mb-2">Ressources Supplémentaires</h3>
-          <p class="text-gray-700 mb-4">Accédez à des ressources supplémentaires pour approfondir vos connaissances sur
-            le jardinage durable.</p>
-          <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Voir
-            Plus</a>
-        </div>
-      </div>
 
-      <div class="card bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="bg-blue-200 h-32 flex items-center justify-center">
-          <img src="path/to/image3.jpg" alt="Image 3" class="w-16 h-16 object-cover">
-        </div>
-        <div class="p-4">
-          <h3 class="text-xl font-semibold mb-2">Conseils Pratiques</h3>
-          <p class="text-gray-700 mb-4">Trouvez des conseils pratiques pour améliorer l'efficacité de votre jardin et
-            favoriser un jardinage durable.</p>
-          <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Accéder
-            aux Conseils</a>
+        <div class="card bg-white shadow-lg rounded-lg overflow-hidden">
+          <div class="bg-blue-200 h-32 flex items-center justify-center">
+            <img src="path/to/image3.jpg" alt="Image 3" class="w-16 h-16 object-cover">
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">Conseils Pratiques</h3>
+            <p class="text-gray-700 mb-4">Trouvez des conseils pratiques pour améliorer l'efficacité de votre jardin et favoriser un jardinage durable.</p>
+            <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Accéder aux Conseils</a>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </div>
