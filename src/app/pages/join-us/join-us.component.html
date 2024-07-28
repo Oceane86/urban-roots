@@ -1,38 +1,44 @@
 <!-- src/app/pages/join-us/join-us.component.html -->
+
+
 <div class="join-us h-screen flex flex-col justify-center items-center relative bg-[#20493C]">
-  <!-- Arrière-plan avec flou -->
-  <div class="absolute top-20 left-5 right-5 bottom-0 flex justify-center items-center">
-    <div class="bg-opacity-50 backdrop-blur-sm rounded-lg p-6">
-      <!-- Contenu centré -->
-      <div class="text-center">
-        <p class="text-4xl text-white">Commencer à utiliser l'app</p>
+
+  <!-- Contenu centré -->
+  <div class="w-full px-4 pt-6 pb-8 mb-4 max-w-xl">
+    <div class="text-left mb-6">
+        <img src="../../../assets/img/logo_urbanroots.png" alt="Urbanroots_logo" class="w-7 h-11 mb-4" />
+      </div>
+      <div class="text-left leading-10 mb-4">
+        <h1 class="text-2xl font-semibold text-[#B7FA61]">Commencer à utiliser l'app</h1>
+        <p class="text-white mt-2">Créez votre compte, cela prend moins d'une minute. Entrez votre email et votre mot de
+          passe.</p>
 
         <!-- Message d'erreur -->
         <div *ngIf="showError" class="text-red-500 mt-2">
           {{ errorMessage }}
         </div>
 
-        <!-- Bouton "Log In" avec z-index ajusté -->
-        <div class="flex justify-center">
-          <button [disabled]="!termsAccepted" (click)="nextScreen()" class="mt-4 bg-white text-black py-2 px-4 rounded">Connexion</button>
+        <!-- Boutons de connexion et inscription -->
+        <div class="flex justify-center mb-4">
+          <button [disabled]="!termsAccepted" (click)="nextScreen()" class="mt-4 bg-[#B7FA61] text-black py-2 px-6 rounded-full shadow hover:bg-[#A1E555] transition duration-300 ease-in-out">Connexion</button>
         </div>
-        <div class="flex justify-center">
-          <button [disabled]="!termsAccepted" routerLink="/register" class="mt-4 bg-white text-black py-2 px-4 rounded">Inscription</button>
+        <div class="flex justify-center mb-4">
+          <button [disabled]="!termsAccepted" routerLink="/register" class="mt-4 bg-[#B7FA61] text-black py-2 px-6 rounded-full shadow hover:bg-[#A1E555] transition duration-300 ease-in-out">Inscription</button>
         </div>
 
         <!-- Bouton "Se connecter avec Google" -->
-        <div class="mt-4 flex justify-center">
-          <button [disabled]="!termsAccepted" (click)="googleSignin()" class="bg-white text-black py-2 px-4 rounded flex items-center">
-            <span class="ml-2">Se connecter avec Google</span>
+        <div class="mt-4 flex justify-center mb-4">
+          <button [disabled]="!termsAccepted" (click)="googleSignin()" class="bg-white text-black py-2 px-6 rounded-full flex items-center shadow hover:bg-gray-100 transition duration-300 ease-in-out">
+            <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path d="M44.5 20H24v8.5h11.6c-1.6 4.3-5.7 7.4-10.6 7.4-6.4 0-11.6-5.2-11.6-11.6S18.6 12.7 25 12.7c2.9 0 5.5 1 7.6 2.7l5.7-5.7C34.7 7.4 30.1 5.5 25 5.5 13.5 5.5 4.5 14.5 4.5 26S13.5 46.5 25 46.5c11.1 0 20.5-9.4 20.5-20.5 0-1.1-.1-2.2-.3-3.3H44.5z"/></svg>
+            <span>Se connecter avec Google</span>
           </button>
         </div>
 
         <!-- Case à cocher pour accepter les conditions générales -->
         <div class="mt-4 flex items-center justify-center">
-          <input type="checkbox" id="terms" (change)="toggleTermsAccepted($event)">
+          <input type="checkbox" id="terms" (change)="toggleTermsAccepted($event)" class="form-checkbox h-4 w-4 text-[#B7FA61] transition duration-150 ease-in-out">
           <label for="terms" class="ml-2 text-white">J'accepte les conditions générales</label>
         </div>
-      </div>
     </div>
   </div>
 </div>
