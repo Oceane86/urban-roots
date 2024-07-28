@@ -1,7 +1,10 @@
+// src/app/pages/quiz/quiz.component.ts
+
+
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';  // Importer FormsModule ici
-import { CommonModule } from '@angular/common';  // Assurez-vous d'importer CommonModule si nécessaire
-import { RouterModule } from '@angular/router';  // Importer RouterModule ici
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 interface Question {
   text: string;
@@ -16,7 +19,7 @@ interface Article {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
@@ -50,20 +53,45 @@ export class QuizComponent {
     "Moins d'une fois par semaine": { title: "Arrosage Peu Fréquent", content: "Certaines plantes, comme les succulentes, préfèrent un arrosage peu fréquent." }
   };
 
+  currentIndex = 0;
   answers: string[] = new Array(this.questions.length).fill('');
   displayedArticles: Article[] = [];
   quizCompleted = false;
 
+  get currentQuestion(): Question {
+    return this.questions[this.currentIndex];
+  }
+
+  get progressWidth(): string {
+    return ((this.currentIndex + 1) / this.questions.length) * 100 + '%';
+  }
+
+  nextQuestion(): void {
+    if (this.currentIndex < this.questions.length - 1) {
+      this.currentIndex++;
+    }
+  }
+
+  prevQuestion(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
   submitQuiz(): void {
+    console.log('Submitting quiz...');
     this.displayedArticles = this.answers
       .map(answer => this.articles[answer])
       .filter(article => article !== undefined) as Article[];
+    console.log('Displayed Articles:', this.displayedArticles);
     this.quizCompleted = true;
+    console.log('Quiz Completed:', this.quizCompleted);
   }
 
   resetQuiz(): void {
     this.answers = new Array(this.questions.length).fill('');
     this.displayedArticles = [];
+    this.currentIndex = 0;
     this.quizCompleted = false;
   }
 }

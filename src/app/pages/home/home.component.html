@@ -1,11 +1,13 @@
-<div class="container-fluid bg-dark text-light rounded-bottom py-8">
+<div class="container-fluid bg-[#20493C] text-white rounded-bottom py-8">
   <div class="row justify-content-between align-items-center p-4">
     <div class="col">
       <h1 class="display-6 fw-bold">Urban <span class="text-success">Roots</span></h1>
       <h1 class="text-3xl">Bienvenue, {{ user?.username }}</h1>
       <!-- Afficher le message et l'icône lorsque l'utilisateur n'est pas connecté -->
       <div *ngIf="!user" class="notification d-flex align-items-center">
-        <span class="notification-message">Please log in to enjoy more features</span>
+        <span class="notification-message">
+          Veuillez <a routerLink="/login" class="text-decoration-underline hover:underline">vous connecter</a> pour profiter de plus de fonctionnalités.
+        </span>
       </div>
       <div *ngIf="user" class="bg-white w-full text-black p-2 mt-4 rounded-2xl border flex items-center">
         <span>Dernier message sur du forum</span>
@@ -15,16 +17,16 @@
   </div>
 </div>
 
-<div class="container-fluid bg-white text-dark rounded-bottom py-8">
+<div class="container-fluid bg-black text-white rounded-bottom py-8">
   <div class="row justify-content-center align-items-center p-4">
     <div class="col text-center">
-      <p class="text-xl fw-bold text-dark">Nombre d'espaces urbains regroupés sur l'application</p>
-      <p class="text-sm text-dark">{{ urbanSpacesCount !== null ? urbanSpacesCount : 'Chargement...' }}</p>
+      <p class="text-xl fw-bold text-white">Nombre d'espaces urbains regroupés sur l'application</p>
+      <p class="text-sm text-white">{{ urbanSpacesCount !== null ? urbanSpacesCount : 'Chargement...' }}</p>
     </div>
   </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid bg-black">
   <div class="row p-4">
     <div class="col-md-6 mb-4">
       <div class="position-relative">
@@ -37,16 +39,17 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6 bg-black">
       <div class="row g-4">
         <div class="col position-relative" (click)="navigateToGuide()">
-          <img src="/assets/img/Card3.png" alt="Cactus" class="img-fluid rounded-lg">
-          <p class="position-absolute bottom-0 start-50 translate-middle-x text-lg fw-bold text-white">
-            Échange et <br> Partage
-          </p>
+          <div class="bg-[#B7FA61] rounded-lg w-100 h-100" style="height: 200px;">
+            <p class="position-absolute start-50 translate-middle-x text-lg fw-bold text-white" style="bottom: 20px;">
+              Échange et <br> Partage
+            </p>
+          </div>
         </div>
 
-        <div class="col position-relative">
+        <div class="col position-relative bg-black">
           <img src="/assets/img/Card3.png" alt="Cactus Red" class="img-fluid rounded-lg">
           <p class="position-absolute bottom-0 start-50 translate-middle-x text-lg fw-bold text-white">
             Organisations <br> d'Événements
