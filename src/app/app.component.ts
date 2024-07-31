@@ -1,3 +1,5 @@
+// src/app/app.component.ts
+
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -6,6 +8,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { NavigationEnd } from '@angular/router';
+import { Firestore } from 'firebase/firestore';
 
 
 

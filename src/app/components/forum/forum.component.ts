@@ -1,3 +1,5 @@
+// src/app/components/forum/forum.component.ts
+
 import { Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

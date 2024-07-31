@@ -1,65 +1,63 @@
-<div class="container-fluid bg-[#20493C] text-white rounded-bottom py-8">
+<div class="container-fluid bg-[#20493C] text-white py-8 rounded-b-lg">
   <div class="row justify-content-between align-items-center p-4">
     <div class="col">
-      <h1 class="display-6 fw-bold">Urban <span class="text-success">Roots</span></h1>
-      <h1 class="text-3xl">Bienvenue, {{ user?.username }}</h1>
+      <h1 class="text-4xl font-bold">Urban <span class="text-green-500">Roots</span></h1>
+      <h1 class="text-3xl mt-4">Bienvenue, {{ user?.username }}</h1>
       <!-- Afficher le message et l'icône lorsque l'utilisateur n'est pas connecté -->
-      <div *ngIf="!user" class="notification d-flex align-items-center">
+      <div *ngIf="!user" class="notification flex items-center mt-4">
         <span class="notification-message">
-          Veuillez <a routerLink="/login" class="text-decoration-underline hover:underline">vous connecter</a> pour profiter de plus de fonctionnalités.
+          Veuillez <a routerLink="/login" class="underline hover:underline text-green-500">vous connecter</a> pour profiter de plus de fonctionnalités.
         </span>
       </div>
       <div *ngIf="user" class="bg-white w-full text-black p-2 mt-4 rounded-2xl border flex items-center">
-        <span>Dernier message sur du forum</span>
-        <i class="fas fa-heart text-xl mr-2"></i>
+        <span>Dernier message sur le forum</span>
+        <i class="fas fa-heart text-xl ml-2"></i>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid bg-black text-white rounded-bottom py-8">
-  <div class="row justify-content-center align-items-center p-4">
+<div class="container-fluid bg-[#141414] text-white py-8 rounded-b-lg">
+  <div class="row justify-content-center items-center p-4">
     <div class="col text-center">
-      <p class="text-xl fw-bold text-white">Nombre d'espaces urbains regroupés sur l'application</p>
-      <p class="text-sm text-white">{{ urbanSpacesCount !== null ? urbanSpacesCount : 'Chargement...' }}</p>
+      <p class="text-xl font-bold">Nombre d'espaces urbains regroupés sur l'application</p>
+      <p class="text-sm">{{ urbanSpacesCount !== null ? urbanSpacesCount : 'Chargement...' }}</p>
     </div>
   </div>
 </div>
 
-<div class="container-fluid bg-black">
+<div class="container-fluid bg-[#141414]">
   <div class="row p-4">
     <div class="col-md-6 mb-4">
-      <div class="position-relative">
+      <div class="relative h-full">
         <a [routerLink]="['/carte-test']">
-          <img src="/assets/img/Card2.png" alt="Green Plants" class="img-fluid rounded-lg mt-2">
-          <h2 class="position-absolute bottom-0 start-50 translate-middle-x text-2xl fw-bold text-white">
+          <img src="/assets/img/Card2.png" alt="Green Plants" class="w-full h-auto rounded-lg mt-2">
+          <h2 class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-2xl font-bold text-white text-center">
             Visualiser votre <br> Carte Interactive
           </h2>
         </a>
       </div>
     </div>
 
-    <div class="col-md-6 bg-black">
-      <div class="row g-4">
-        <div class="col position-relative" (click)="navigateToGuide()">
-          <div class="bg-[#B7FA61] rounded-lg w-100 h-100" style="height: 200px;">
-            <p class="position-absolute start-50 translate-middle-x text-lg fw-bold text-white" style="bottom: 20px;">
+    <div class="col-md-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
+        <div class="relative cursor-pointer h-full" (click)="navigateToGuide()">
+          <div class="bg-[#B7FA61] rounded-lg flex items-center justify-center h-full">
+            <p class="text-lg font-bold text-white text-center">
               Échange et <br> Partage
             </p>
           </div>
         </div>
 
-        <div class="col position-relative bg-black">
-          <img src="/assets/img/Card3.png" alt="Cactus Red" class="img-fluid rounded-lg">
-          <p class="position-absolute bottom-0 start-50 translate-middle-x text-lg fw-bold text-white">
+        <div class="relative h-full">
+          <img src="/assets/img/Card3.png" alt="Cactus Red" class="w-full h-full object-cover rounded-lg">
+          <p class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-lg font-bold text-white text-center">
             Organisations <br> d'Événements
           </p>
         </div>
-
       </div>
     </div>
   </div>
 </div>
-
 
 <app-bottom-bar></app-bottom-bar>
