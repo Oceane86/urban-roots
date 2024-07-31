@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  private markersLayerGroup!: L.MarkerClusterGroup; // Use MarkerClusterGroup
+  private markersLayerGroup!: L.MarkerClusterGroup;
   public searchQuery: string = '';
   public filteredGardens: any[] = [];
   public selectedGarden: any = null;
@@ -78,7 +78,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       ]
     });
 
-    this.markersLayerGroup = L.markerClusterGroup(); // Initialize MarkerClusterGroup
+    this.markersLayerGroup = new window.L.MarkerClusterGroup(); // Initialize MarkerClusterGroup
     this.map.addLayer(this.markersLayerGroup); // Add to the map
 
     this.loadMarkers();
