@@ -5,7 +5,6 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 
@@ -121,16 +120,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private createPopupContent(garden: any): string {
-    let content = `<b>${garden.title}</b><br>`;
-    content += `<p>${garden.ville}, ${garden.cp}</p>`;
-    content += `<p>Type de projet: ${garden.list_typeprojet.join(', ')}</p>`;
-    content += `<p>Activités: ${garden.list_typeactivite.join(', ')}</p>`;
-    content += `<p>Techniques de production: ${garden.list_techniqueprod.join(', ')}</p>`;
-    content += `<p>Types de production: ${garden.list_typeprod.join(', ')}</p>`;
-    if (garden.img) {
-      content += `<img src="${garden.img}" alt="${garden.title}" style="width:100px;height:auto;">`;
-    }
-    return content;
+    return `
+      <div style="display: flex; align-items: center; max-width: 300px;">
+        <img src="${garden.img}" alt="${garden.title}" style="width: 100px; height: auto; margin-right: 10px; border-radius: 8px;">
+        <div>
+          <h4 style="margin: 0; font-size: 16px;">${garden.title}</h4>
+          <p style="margin: 5px 0;">${garden.ville}, ${garden.cp}</p>
+          <p style="margin: 5px 0;"><strong>Type de projet:</strong> ${garden.list_typeprojet.join(', ')}</p>
+          <p style="margin: 5px 0;"><strong>Activités:</strong> ${garden.list_typeactivite.join(', ')}</p>
+          <p style="margin: 5px 0;"><strong>Techniques de production:</strong> ${garden.list_techniqueprod.join(', ')}</p>
+          <p style="margin: 5px 0;"><strong>Types de production:</strong> ${garden.list_typeprod.join(', ')}</p>
+        </div>
+      </div>
+    `;
   }
 
   private updatePopupContent(garden: any): void {

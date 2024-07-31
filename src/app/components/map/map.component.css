@@ -1,10 +1,15 @@
 /* Styles for cluster icons */
 .cluster-icon {
-    background-color: #ff6f61;
-    border-radius: 50%;
-    color: white;
-    text-align: center;
-    line-height: 40px;
-    font-size: 16px;
-    font-weight: bold;
-  }
+  background-color: #ff6f61;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+.leaflet-popup-tip {
+  display: none !important;
+}
