@@ -6,13 +6,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
+import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule, CommonModule, BottomBarComponent]
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   private map!: L.Map;
@@ -70,7 +72,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       zoom: 10 // Niveau de zoom initial
     });
 
-    // Ajoutez la couche de tuiles OSM
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
 
