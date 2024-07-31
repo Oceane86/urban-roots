@@ -67,16 +67,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     this.map = L.map('map', {
       center: [46.603354, 1.888334],
-      zoom: 6,
-      layers: [
-        L.tileLayer('https://api.mapbox.com/styles/v1/chainez-mlh/clu751mt600dd01pieymr79xk/tiles/{z}/{x}/{y}?access_token=' + environment.mapbox.accessToken, {
-          attribution: '',
-          maxZoom: 18,
-          tileSize: 512,
-          zoomOffset: -1
-        })
-      ]
+      zoom: 10 // Niveau de zoom initial
     });
+
+    // Ajoutez la couche de tuiles OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+
 
     this.markersLayerGroup = new window.L.MarkerClusterGroup(); // Initialize MarkerClusterGroup
     this.map.addLayer(this.markersLayerGroup); // Add to the map
