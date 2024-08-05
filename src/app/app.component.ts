@@ -1,14 +1,13 @@
 // src/app/app.component.ts
 
+
+
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { LoadingComponent } from './loading/loading.component';
 import { Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { NavigationEnd } from '@angular/router';
-import { Firestore } from 'firebase/firestore';
 
 
 
@@ -20,14 +19,13 @@ import { Firestore } from 'firebase/firestore';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
   authService = inject(AuthService);
 
   loading = true;
 
-  constructor(private router: Router) {}
-
-
+  constructor(private router: Router){}
 
   ngOnInit(): void {
     setTimeout(() => {

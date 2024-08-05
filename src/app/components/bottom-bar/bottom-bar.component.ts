@@ -17,6 +17,4 @@ export class BottomBarComponent {
     this.router.navigate([`/${path}`]);
 
   }
-
-
 }

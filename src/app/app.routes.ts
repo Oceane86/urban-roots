@@ -7,9 +7,9 @@ import { HomeComponent } from './pages/home/home.component';
 import { Profile } from './pages/profile/profile.component'; // Correct the import
 import { InteractiveGuideComponent } from './pages/interactive-guide/interactive-guide.component';
 import { QuizComponent } from './pages/quiz/quiz.component';
-import { ForumComponent } from './components/forum/forum.component';
+import { ForumComponent } from './pages/forum/forum.component';
 import { MapComponent } from './components/map/map.component';
-import { ReplyPageComponent } from './components/reply/reply.component';
+import { ReplyPageComponent } from './pages/reply/reply.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 
@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent},
   { path: 'guide-interactif', component: InteractiveGuideComponent },
   { path: 'quiz', component: QuizComponent },
-  { path: 'replyId', component: ReplyPageComponent },
+  { path: 'reply/:id', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
   { path: 'carte', component: MapComponent }
 ];
