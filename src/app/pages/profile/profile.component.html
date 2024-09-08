@@ -1,29 +1,36 @@
-<!-- src/app/pages/profile/profile.component.html -->
-<div class="bg-[#004D3D] text-white rounded-xl p-6 w-80 mx-auto mt-20">
-  <div class="flex flex-col items-center">
-    <h2 class="text-xl font-bold">{{ user.username }}</h2>
-    <p>{{ user.email }}</p>
+<div class="bg-[#004D3D] text-white rounded-xl p-8 w-96 mx-auto mt-20 shadow-lg">
+  <!-- Section Profil Utilisateur -->
+  <div class="flex flex-col items-center text-center mb-6">
+    <h2 class="text-2xl font-bold mb-2">{{ user.username }}</h2>
+    <p class="text-sm text-gray-200">{{ user.email }}</p>
   </div>
-  <p class="my-4 text-center">This is my bio and thank you for taking time to read it as it means a lot to me.</p>
-  <div class="rounded-lg p-4">
-    <button class="flex items-center mb-4 bg-[#B7FA61] text-teal-900 rounded-lg p-2 w-full">
+
+  <!-- Bio Section -->
+  <p class="mb-6 text-center text-gray-100">
+    Voici ma bio. Merci de prendre le temps de la lire, cela compte beaucoup pour moi.
+  </p>
+
+  <!-- Boutons de Paramètres -->
+  <div class="rounded-lg">
+    <button class="flex items-center mb-4 bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300">
       <div class="mr-4 text-2xl"><i class="fas fa-cog"></i></div>
       <div>
-        <h3 class="text-sm font-bold">PARAMETRE</h3>
-      </div>
-    </button>
-    <button class="flex items-center mb-4 bg-[#B7FA61] text-teal-900 rounded-lg p-2 w-full">
-      <div class="mr-4 text-2xl"><i class="fas fa-book"></i></div>
-      <div>
-        <h3 class="text-sm font-bold">LANGUE</h3>
+        <h3 class="text-sm font-bold">Paramètres</h3>
       </div>
     </button>
 
-    <button class="flex items-center bg-[#B7FA61] text-teal-900 rounded-lg p-2 w-full" (click)="logout()">
+    <button class="flex items-center mb-4 bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300">
+      <div class="mr-4 text-2xl"><i class="fas fa-book"></i></div>
+      <div>
+        <h3 class="text-sm font-bold">Langue</h3>
+      </div>
+    </button>
+
+    <!-- Bouton de Déconnexion -->
+    <button class="flex items-center bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300" (click)="logout()">
       <div class="mr-4 text-2xl"><i class="fas fa-sign-out-alt"></i></div>
       <span class="cursor-pointer text-sm font-bold">Déconnexion</span>
     </button>
-
   </div>
 </div>
 
