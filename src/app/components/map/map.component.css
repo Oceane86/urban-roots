@@ -1,6 +1,9 @@
 /* Styles for cluster icons */
+
+
+
 .cluster-icon {
-  background-color: #ff6f61;
+  background-color: marker-icon;
   border-radius: 50%;
   color: white;
   text-align: center;
@@ -13,3 +16,5 @@
 .leaflet-popup-tip {
   display: none !important;
 }
+
+

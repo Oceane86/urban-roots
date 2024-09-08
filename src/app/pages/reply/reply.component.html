@@ -1,55 +1,61 @@
-<body class="bg-[#FFF6E7]  min-h-screen flex flex-col ">
+<body class="bg-[#20493C] min-h-screen flex flex-col justify-between">
 
-   <!-- Retour Button -->
-   <div class="p-4">
+  <!-- Bouton de Retour -->
+  <div class="p-4">
     <button (click)="goBack('forum')"
-            class="bg-[#004D3D] text-white px-4 py-2 rounded-full flex items-center">
-      <i class="fas fa-arrow-left"></i>
-      
+            class="bg-[#004D3D] text-white px-4 py-2 rounded-full flex items-center hover:bg-[#006F58] transition duration-300">
+      <i class="fas fa-arrow-left mr-2"></i> Retour
     </button>
- 
+  </div>
 
+  <!-- Section des messages (Chat) -->
+  <div class="flex-1 overflow-y-auto px-4 py-6 space-y-4" id="messageContainer">
+    <div *ngIf="post" class="bg-white p-4 rounded-lg shadow-md">
+      <!-- Contenu de la question initiale -->
+      <p class="text-[#004D3D] text-xl font-bold">Sujet de la discussion</p>
+      <p class="text-gray-800 font-semibold">{{ post.content }}</p>
+      <p class="text-sm text-gray-500">Posté par : {{ post.email }}</p>
+    </div>
 
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-semibold  mb-4 bg-[#004D3D] text-white px-4 py-2 rounded-full ">Question</h1>
-    
-    <!-- Post Content -->
-    <div class="space-y-4 border-t-4 border-[#B7FA61] bg-white rounded-lg">
-      <div class="p-3  shadow-md rounded-lg ">
-    <div *ngIf="post" class="mb-3">
-      <p class="text-lg font-semibold">{{ post.content }}</p>
-      <p class="text-sm text-gray-500">Posted by: {{ post.email }}</p>
+    <!-- Messages Réponses quand c'est un autre utilisateur -->
+    <div *ngFor="let reply of post.replies" class="flex justify-start">
+      <div class="bg-[#F3FEE6] p-3 rounded-lg shadow-md mb-4 max-w-xs">
+        <p class="text-gray-700 font-semibold">{{ reply.email }}</p>
+        <p class="text-gray-600">{{ reply.content }}</p>
+      </div>
     </div>
-    </div>
+
+    <!-- Messages envoyés par l'utilisateur -->
+    <div class="flex justify-end">
+      <div class="bg-[#B7FA61] p-3 rounded-lg shadow-md mb-4 max-w-xs text-right">
+        <p class="text-white">Votre message envoyé.</p>
+      </div>
     </div>
   </div>
-    
-    <!-- Replies Section -->
-    <div *ngIf="post?.replies?.length > 0" class="mx-auto p-4 mb-4 ">
-      <h2 class="text-2xl font-semibold  mb-4 bg-[#B7FA61] text-white px-4 py-2 rounded-full">Reponses</h2>
-      <div *ngFor="let reply of post.replies" class="p-4 mb-2 bg-gray-100 border border-gray-200 rounded">
-        <p class="text-sm font-semibold">{{ reply.email }}:</p>
-        <p>{{ reply.content }}</p>
-      </div>
-    </div>
-  
-    <!-- New Reply Input -->
-    <div class="mb-4">
-      <textarea #replyInput placeholder="Votre reponse"
-                class="w-full p-3 rounded-lg shadow-md border border-gray-300 focus:outline-none"
-                rows="4"></textarea>
-    </div>
-    
-    <!-- Send Reply Button -->
-    <div class="flex justify-between items-center mb-4">
-      <div class="flex items-center space-x-2">
-        
-      </div>
+
+  <!-- Section pour envoyer un nouveau message -->
+  <div class="p-4 bg-white shadow-inner">
+    <textarea #replyInput placeholder="Écrire un message..."
+              class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00B894] resize-none"
+              rows="2"></textarea>
+    <div class="flex justify-end mt-2">
       <button (click)="sendReply()"
-              class="bg-[#202427] text-white px-4 py-2 rounded-full ">
-        Repondre
+              class="bg-[#202427] text-white px-4 py-2 rounded-full hover:bg-[#33383C] transition duration-300">
+        Envoyer
       </button>
     </div>
   </div>
-  
+
 </body>
+
+<script>
+  // Script pour défiler automatiquement vers le bas quand un nouveau message est ajouté
+  const messageContainer = document.getElementById('messageContainer');
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+
+  function sendReply() {
+    // Logique pour envoyer le message
+    // Après avoir envoyé, déplacer vers le bas
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+  }
+</script>

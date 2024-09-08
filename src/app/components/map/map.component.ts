@@ -83,17 +83,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       (position: any) => {
         const userIcon = L.icon({
           iconUrl: 'assets/images/marker-icon.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
+          iconSize: [50, 50],
+          iconAnchor: [25, 30],
+          popupAnchor: [0, -50],
         });
 
         const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon });
 
         L.circle([position.latitude, position.longitude], {
-          radius: position.accuracy / 2,
-          color: 'red',
-          fillColor: 'red',
+          radius: Math.max(position.accuracy / 2, 100),         
+          color: '#20493C',
+          fillColor: '#20493C',
           fillOpacity: 0.2,
         }).addTo(this.map);
 
@@ -165,7 +165,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     const gardenIcon = L.icon({
       iconUrl: 'assets/images/garden-icon.png',
-      iconSize: [70, 70],
+      iconSize: [40, 40],
       iconAnchor: [35, 70], // Center the icon properly
       popupAnchor: [0, -70], // Adjust popup position relative to icon
     });
