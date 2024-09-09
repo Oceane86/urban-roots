@@ -65,4 +65,6 @@ export class HomeComponent implements OnInit {
   navigateToForum(): void {
     this.router.navigate(['/forum']);
   }
+
+ 
 }
