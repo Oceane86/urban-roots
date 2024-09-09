@@ -61,4 +61,8 @@ export class HomeComponent implements OnInit {
   navigateToGuide(): void {
     this.router.navigate(['/quiz']);
   }
+
+  navigateToForum(): void {
+    this.router.navigate(['/forum']);
+  }
 }

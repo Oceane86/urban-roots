@@ -1,3 +1,5 @@
+// map.component.ts
+
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.fullscreen';
@@ -7,6 +9,7 @@ import { Observable, Subscriber } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -28,8 +31,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   };
   private urbanSpaces: any[] = [];
   public resultsCount: number = 0;
+  // router: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router : Router) {}
 
   ngAfterViewInit(): void {
     this.loadMap();
@@ -91,7 +95,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         const userMarker = L.marker([position.latitude, position.longitude], { icon: userIcon });
 
         L.circle([position.latitude, position.longitude], {
-          radius: Math.max(position.accuracy / 2, 100),         
+          radius: Math.max(position.accuracy / 2, 100),
           color: '#20493C',
           fillColor: '#20493C',
           fillOpacity: 0.2,
@@ -134,6 +138,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       </div>
     `;
   }
+
+
 
   private updatePopupContent(garden: any): void {
     this.selectedGarden = garden;
@@ -178,4 +184,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.markersLayerGroup.addLayer(gardenMarker); // Add to MarkerClusterGroup
     });
   }
+
+
+
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
+
+
+
 }
