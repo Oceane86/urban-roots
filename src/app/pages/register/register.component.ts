@@ -36,7 +36,7 @@ export class RegisterComponent {
       this.authService.register(rawForm.email, rawForm.username, rawForm.password).subscribe({
         next: () => {
           console.log('Registration successful, navigating to home.');
-          this.router.navigateByUrl('/'); // Redirige vers la page de connexion après l'inscription
+          this.router.navigateByUrl('/home'); // Redirige vers la page d'accueil après l'inscription
         },
         error: (err) => {
           console.error('Error during registration:', err);
