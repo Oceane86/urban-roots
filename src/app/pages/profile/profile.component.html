@@ -1,35 +1,21 @@
-<div class="bg-[#004D3D] text-white rounded-xl p-8 w-96 mx-auto mt-20 shadow-lg">
+<div class="bg-[#20493C] text-white rounded-2xl p-8 w-full max-w-md mx-auto mt-12 shadow-2xl min-h-screen flex flex-col justify-center items-center">
   <!-- Section Profil Utilisateur -->
   <div class="flex flex-col items-center text-center mb-6">
-    <h2 class="text-2xl font-bold mb-2">{{ user.username }}</h2>
-    <p class="text-sm text-gray-200">{{ user.email }}</p>
+    <h2 class="text-3xl font-extrabold mb-2">{{ user.username }}</h2>
+    <p class="text-lg text-gray-300">{{ user.email }}</p>
   </div>
 
   <!-- Bio Section -->
-  <p class="mb-6 text-center text-gray-100">
-    Voici ma bio. Merci de prendre le temps de la lire, cela compte beaucoup pour moi.
+  <p id="bioText" class="mb-6 text-center text-gray-200 italic">
+    {{ bioText }}
   </p>
 
-  <!-- Boutons de Paramètres -->
-  <div class="rounded-lg">
-    <button class="flex items-center mb-4 bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300">
-      <div class="mr-4 text-2xl"><i class="fas fa-cog"></i></div>
-      <div>
-        <h3 class="text-sm font-bold">Paramètres</h3>
-      </div>
-    </button>
-
-    <button class="flex items-center mb-4 bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300">
-      <div class="mr-4 text-2xl"><i class="fas fa-book"></i></div>
-      <div>
-        <h3 class="text-sm font-bold">Langue</h3>
-      </div>
-    </button>
-
+  <!-- Boutons de Déconnexion -->
+  <div class="space-y-4">
     <!-- Bouton de Déconnexion -->
-    <button class="flex items-center bg-[#B7FA61] text-[#004D3D] rounded-lg p-3 w-full hover:bg-[#A3E754] transition duration-300" (click)="logout()">
-      <div class="mr-4 text-2xl"><i class="fas fa-sign-out-alt"></i></div>
-      <span class="cursor-pointer text-sm font-bold">Déconnexion</span>
+    <button class="flex items-center bg-[#A0F9A4] text-[#003B2F] rounded-lg p-4 w-full hover:bg-[#8BFF8D] transition-colors duration-300 shadow-md hover:shadow-lg">
+      <div class="mr-3 text-xl"><i class="fas fa-sign-out-alt"></i></div>
+      <span class="text-base font-semibold">Déconnexion</span>
     </button>
   </div>
 </div>

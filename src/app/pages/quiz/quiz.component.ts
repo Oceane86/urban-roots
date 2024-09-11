@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router'; 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -56,6 +57,8 @@ export class QuizComponent {
   displayedArticles: Article[] = [];
   quizCompleted = false;
 
+  constructor(private router: Router) {} // Injecter Router
+
   get currentQuestion(): Question {
     return this.questions[this.currentIndex];
   }
@@ -91,5 +94,9 @@ export class QuizComponent {
     this.displayedArticles = [];
     this.currentIndex = 0;
     this.quizCompleted = false;
+  }
+
+  navigateToHome(): void {
+    this.router.navigate(['/home']); // Vérifie que this.router est correctement initialisé
   }
 }
