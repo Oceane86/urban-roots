@@ -11,6 +11,7 @@ import { ForumComponent } from './pages/forum/forum.component';
 import { MapComponent } from './components/map/map.component';
 import { ReplyPageComponent } from './pages/reply/reply.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { TermsComponent } from './pages/terms/terms.component';
 
 
 export const routes: Routes = [
@@ -25,5 +26,8 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent },
   { path: 'reply/:id', component: ReplyPageComponent },
   { path: 'forum', component: ForumComponent },
-  { path: 'carte', component: MapComponent }
+  { path: 'carte', component: MapComponent },
+  { path: 'terms', component: TermsComponent },
+  { path: '**', redirectTo: '/join-us' }
+
 ];

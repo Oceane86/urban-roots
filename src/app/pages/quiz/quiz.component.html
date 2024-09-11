@@ -1,21 +1,38 @@
 <!-- src/app/pages/quiz/quiz.component.html -->
 
-<div class="join-us h-screen flex flex-col items-center justify-center bg-[#20493C] p-4">
+<div class="join-us h-full flex flex-col items-center justify-center bg-[#20493C] p-4">
   <h1 class="text-2xl font-semibold text-[#B7FA61] text-center mb-4">Quiz sur le Jardinage Durable</h1>
 
   <!-- Barre de progression -->
-  <div class="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-4">
-    <div class="bg-[#B7FA61] h-2.5 rounded-full" [style.width]="progressWidth"></div>
+  <div class="w-full max-w-md bg-white rounded-full h-3 mb-8 relative">
+    <div class="bg-gradient-to-r from-[#B7FA61] to-[#8DC23E] h-3 rounded-full shadow-md" [style.width]="progressWidth">
+    </div>
+    <div class="absolute top-0 bottom-5 left-0 h-full w-full rounded-full border border-[#B7FA61]"></div>
+    <!-- Numéro de la question -->
+    <div class="w-full flex justify-between px-2 text-sm font-medium text-[#B7FA61]">
+      <span>Question {{ currentIndex + 1 }} sur {{ questions.length }}</span>
+    </div>
   </div>
+
 
   <div *ngIf="!quizCompleted" class="w-full max-w-md text-left">
     <div class="mb-8">
-      <h2 class="text-xl font-semibold mb-2 text-[#B7FA61]">{{ currentQuestion.text }}</h2>
-      <div *ngFor="let option of currentQuestion.options" class="mb-2 flex items-center">
-        <input type="radio" name="question" [value]="option" [(ngModel)]="answers[currentIndex]" required class="mr-2">
-        <label class="block text-white">{{ option }}</label>
+      <h2 class="text-xl font-semibold mb-4 text-[#B7FA61]">{{ currentQuestion.text }}</h2>
+      <div *ngFor="let option of currentQuestion.options" class="mb-4 flex items-center">
+        <input type="radio" id="{{ option }}" name="question" [value]="option" [(ngModel)]="answers[currentIndex]"
+          required class="hidden peer">
+        <label for="{{ option }}"
+          class="flex w-full items-center cursor-pointer p-4 bg-gray-700 text-white rounded-lg border border-gray-600 transition duration-200 hover:bg-gray-600 peer-checked:bg-green-500 peer-checked:border-green-500">
+          <span class="mr-4 flex-shrink-0 h-6 w-6 rounded-full border border-gray-400 bg-gray-800"></span>
+          {{ option }}
+        </label>
       </div>
     </div>
+
+
+
+
+
 
     <!-- Boutons de navigation -->
     <div class="flex justify-between">
@@ -41,28 +58,34 @@
       <h2 class="text-2xl font-bold mb-6 text-center">Ressources Supplémentaires</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Carte 1 -->
-        <div class="text-white shadow-lg rounded-lg overflow-hidden">
-          <div class="bg-[#B7FA61] h-32 flex items-center justify-center">
-            <img src="path/to/image2.jpg" alt="Image 2" class="w-16 h-16 object-cover">
+        <div class="text-white shadow-lg rounded-lg overflow-hidden w-full">
+          <div class="h-32 w-full">
+            <img src="../../../assets/img/img_jardin_2.jpg" alt="Image 2" class="w-full h-full object-cover">
           </div>
           <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Ressources Supplémentaires</h3>
-            <p class="mb-4">Accédez à des ressources supplémentaires pour approfondir vos connaissances sur le jardinage durable.</p>
-            <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Voir Plus</a>
+            <h3 class="text-lg font-semibold mb-2">Ressources Supplémentaires</h3>
+            <p class="mb-4">Accédez à des ressources supplémentaires pour approfondir vos connaissances sur le jardinage
+              durable.</p>
+            <a [routerLink]="'/guide-interactif'" class="bg-[#B7FA61] text-white px-4 py-2 rounded inline-block">Voir
+              Plus</a>
           </div>
         </div>
 
         <!-- Carte 2 -->
-        <div class="text-white shadow-lg rounded-lg overflow-hidden">
-          <div class="bg-blue-200 h-32 flex items-center justify-center">
-            <img src="path/to/image3.jpg" alt="Image 3" class="w-16 h-16 object-cover">
+        <div class="text-white shadow-lg rounded-lg overflow-hidden w-full">
+          <div class="h-32 w-full">
+            <img src="../../../assets/img/img_jardin_1.jpg" alt="Image 3" class="w-full h-full object-cover">
           </div>
           <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Conseils Pratiques</h3>
-            <p class="mb-4">Trouvez des conseils pratiques pour améliorer l'efficacité de votre jardin et favoriser un jardinage durable.</p>
-            <a [routerLink]="'/guide-interactif'" class="bg-blue-500 text-white px-4 py-2 rounded inline-block">Accéder aux Conseils</a>
+            <h3 class="text-lg font-semibold mb-2">Conseils Pratiques</h3>
+            <p class="mb-4">Trouvez des conseils pratiques pour améliorer l'efficacité de votre jardin et favoriser un
+              jardinage durable.</p>
+            <a [routerLink]="'/guide-interactif'" class="bg-[#B7FA61] text-white px-4 py-2 rounded inline-block">Accéder
+              aux Conseils</a>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>

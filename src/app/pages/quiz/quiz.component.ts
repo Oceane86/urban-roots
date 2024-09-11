@@ -1,6 +1,3 @@
-// src/app/pages/quiz/quiz.component.ts
-
-
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -31,7 +28,7 @@ export class QuizComponent {
     },
     {
       text: "Combien de soleil reçoit votre jardin?",
-      options: ["Plein soleil", "Mi-ombre", "Ombre complète"]
+      options: ["Plein soleil", "Mi-ombre", "Ombre complète", "Exposition variable"],
     },
     {
       text: "À quelle fréquence arrosez-vous vos plantes?",
@@ -47,6 +44,7 @@ export class QuizComponent {
     "Plein soleil": { title: "Plantes pour Plein Soleil", content: "Les plantes qui aiment le plein soleil incluent les tomates, les poivrons et de nombreuses herbes." },
     "Mi-ombre": { title: "Plantes pour Mi-ombre", content: "Les plantes pour mi-ombre incluent les épinards, la laitue et les fougères." },
     "Ombre complète": { title: "Plantes pour Ombre Complète", content: "Les plantes qui tolèrent l'ombre complète incluent les hostas, les fougères et les plantes de sous-bois." },
+    "Exposition variable": { title: "Plantes pour Exposition Variable", content: "Les plantes adaptées aux conditions d'exposition variable peuvent inclure certaines herbes aromatiques et plantes vivaces qui tolèrent différentes quantités de soleil." },
     "Tous les jours": { title: "Arrosage Quotidien", content: "L'arrosage quotidien peut être nécessaire pour les plantes en pots et les jeunes plants, surtout par temps chaud." },
     "Deux fois par semaine": { title: "Arrosage Bihebdomadaire", content: "La plupart des jardins bénéficient d'un arrosage en profondeur deux fois par semaine." },
     "Une fois par semaine": { title: "Arrosage Hebdomadaire", content: "Un arrosage hebdomadaire est suffisant pour les plantes bien établies dans des climats modérés." },

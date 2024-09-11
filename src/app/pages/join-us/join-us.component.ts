@@ -39,13 +39,8 @@ export class JoinUsComponent {
   // Method to toggle the termsAccepted property
   toggleTermsAccepted(event: Event) {
     this.termsAccepted = (event.target as HTMLInputElement).checked;
-    if (this.termsAccepted) {
-      this.showError = false;
-      this.errorMessage = null;
-    } else {
-      this.showError = true;
-      this.errorMessage = 'Veuillez accepter les conditions générales d\'utilisation.';
-    }
+    this.showError = !this.termsAccepted;
+    this.errorMessage = this.termsAccepted ? null : 'Veuillez accepter les conditions générales d\'utilisation.';
     console.log(this.errorMessage);
   }
 
