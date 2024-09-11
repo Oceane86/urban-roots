@@ -1,4 +1,3 @@
-// src/app/pages/profile/profile.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BottomBarComponent } from '../../components/bottom-bar/bottom-bar.component';
@@ -52,6 +51,6 @@ export class Profile implements OnInit {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['/login']); 
   }
 }
