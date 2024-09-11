@@ -31,9 +31,6 @@
 
         <!-- Boutons de réactions -->
         <div class="flex items-center justify-between mt-4">
-          <div class="flex items-center text-[#F72D20]">
-            <i class="far fa-heart mr-2"></i> <span>Aimer</span>
-          </div>
           <button (click)="replyToPost(post.id)" class="flex items-center text-[#B7FA61] hover:underline">
             <i class="fas fa-comment-dots mr-2"></i> Réponse ({{ post.replies?.length || 0 }})
           </button>
