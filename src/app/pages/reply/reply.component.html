@@ -1,15 +1,14 @@
 <body class="bg-gradient-to-b from-[#20493C] to-[#1A3730] min-h-screen flex flex-col justify-between">
 
-  <!-- Bouton de Retour -->
-  <div class="p-4">
+  <!-- Bouton de Retour aligné à gauche -->
+  <div class="w-full flex justify-start p-4">
     <button (click)="goBack('forum')"
-            class="bg-[#006F58] text-white px-4 py-2 rounded-full flex items-center hover:bg-[#00A382] transition duration-300 ease-in-out shadow-lg">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11.414l3.707 3.707a1 1 0 01-1.414 1.414L9 9.414l-3.293 3.293a1 1 0 11-1.414-1.414L8.586 8l-3.293-3.293a1 1 0 111.414-1.414L9 6.586l3.293-3.293a1 1 0 011.414 1.414L11 6.586z" clip-rule="evenodd" />
-      </svg>
-      Retour
+      class="bg-[#004D3D] text-white px-4 py-2 rounded-full flex items-center hover:bg-[#006F58] transition duration-300">
+      <i class="fas fa-arrow-left mr-2"></i> Retour
     </button>
   </div>
+
+
 
   <!-- Section des messages (Chat) -->
   <div class="flex-1 overflow-y-auto px-4 py-6 space-y-4" id="messageContainer">
@@ -35,11 +34,11 @@
   <!-- Section pour envoyer un nouveau message -->
   <div class="p-4 bg-[#F4F7F6] shadow-inner rounded-t-lg">
     <textarea #replyInput placeholder="Écrire un message..."
-              class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00B894] resize-none"
-              rows="2"></textarea>
+      class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00B894] resize-none"
+      rows="2"></textarea>
     <div class="flex justify-end mt-3">
       <button (click)="sendReply()"
-              class="bg-[#20493C] text-white px-4 py-2 rounded-full hover:bg-[#33383C] transition duration-300 ease-in-out shadow-lg">
+        class="bg-[#20493C] text-white px-4 py-2 rounded-full hover:bg-[#33383C] transition duration-300 ease-in-out shadow-lg">
         Envoyer
       </button>
     </div>

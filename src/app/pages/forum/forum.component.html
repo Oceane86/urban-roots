@@ -25,7 +25,7 @@
 
     <!-- Posts List -->
     <div class="space-y-6">
-      <div *ngFor="let post of posts | async" class="rounded-lg p-6 shadow-md border-l-4 relative bg-[#F3FEE6] border-[#B7FA61]">
+      <div *ngFor="let post of posts | async" class="rounded-lg p-6 shadow-md border-l-4 relative bg-[#F3FEE6] border-[#B7FA61] mb-5">
         <h2 class="text-xl font-bold text-gray-800">{{ post.content }}</h2>
         <p class="text-sm text-gray-500">Posté par : {{ post.email }}</p>
 
